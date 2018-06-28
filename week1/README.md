@@ -605,3 +605,105 @@ void merge(double data [ ], int low, int mid, int high, double temp [ ]) {
         }
     }
 ```
+
+***
+
+## Algorithmic Analysis of Merge Sort
+
+Recall that the analysis of recursive algorithms involves defining the execution time as a recurrence relation. Merge sort is breaking an array of size n into two smaller arrays, and then sorting the smaller arrays. So the equation is roughly
+
+```
+T(N) = 2 * T(N / 2) + c1*n + c2
+```
+
+You will remember that the solution to this relation is approximately n log n. Another
+way to think about this is the recursive calls on merge sort will be approximately O(log n)
+levels deep, and at each level it will be doing approximately O(n) operations. 
+
+Merge sort does have one annoying feature, which is that it uses extra memory. It is possible to discover algorithms that, while not asymptotically faster than merge sort, do not have this disadvantage. 
+
+***
+
+## Quick Sort
+
+Quick sort, on the other hand, spends more time on the task of breaking apart. Quick sort selects one element, which is called the pivot. It then divides the array into two sections with the following property:
+
+Every element in the first half is smaller than or equal to the pivot value, while every element in the second half is larger than or equal to the pivot. Notice that this property does not guarantee sorting. Each of the smaller arrays must then be sorted (by recursively calling quick sort). But once sorted, this property makes putting the two sections back together much easier. No merge is necessary, since we know that elements in the first part of the array must all occur before the elements in the second part of the array.
+
+Because the two sections do not have to be moved after the recursive call, the sorting can be performed in-place. That is, there is no need for any additional array as there is when using the merge sort algorithm. As with the merge sort algorithm, it is convenient to have the main function simply invoke an interior function that uses explicit limits for the upper and lower index of the area to be sorted.
+
+### Unsatble Algorithm
+
+There is, however, a danger in this process. In merge sort it was easy to guarantee that the two halves
+were roughly equal size, yielding a fast O(n log n) process. In quick sort this is much more difficult to guarantee. If we are unlucky then in the worst case one partition contains no values, and the other is just one element smaller. This leads to poor O(n2) performance.
+
+### Partitioning
+
+The process of dividing a portion of an array into two sections is termed partitioning. 
+
+The limits of the partition are described by a pair of values: low and high. 
+
+The first represents the lowest index in the section of interest, and the second the highest index. In addition there is a third element that is selected, termed the pivot. 
+
+The first step is to swap the element at the pivot location and the first position. This moves the pivot value out of way of the partition step. The variable i is set to the next position, and the variable j to high.
+
+The heart of the partition algorithm is a while loop. The invariant that is going to be preserved is that 【 all the elements with index values smaller than i are themselves smaller than or equal to the pivot, while all the elements with index values larger than j are themselves larger than the pivot. 】 
+
+At each step of the loop the value at the i position is compared to the pivot. If it is smaller or equal, the invariant is preserved, and the i position can be advanced.
+
+Otherwise, the location of the j position is compared to the pivot. If it is larger then the invariant is also preserved, and the j position is decremented. 
+
+If neither of these two conditions is true the values at the i and j positions can be swapped, since they are bothout of order. Swapping restores our invariant condition.
+
+```
+-> while i < j -> i is pivot + 1, j is high
+-> if the value at i is larger than the pivot value, swap value at i with j
+-> Now the value at j must be larget than pivot value, and we could decrease j
+-> Then, still check the current value at i before swapping, if the value is
+-> small or equal than pivot value, increase i to the next value
+-> In the end, out of the while loop. Swap i and pivot.
+```
+
+The loop proceeds until the values of i and j meet and pass each other. When this happens we know that all the elements with index values less than i are less than or equal to the pivot. This will be the first section. All those elements with index values larger than or equal to i are larger than or equal to the pivot. This will be the second section. The pivot is swapped back to the top of the first section, and the location of the pivot is returned.
+
+
+
+```c
+void quickSort (double storage [ ], int n){ 
+  quickSortInternal (storage, 0, n-1); 
+}
+
+void quickSortInternal (double storage [ ], int low, int high) {
+ if (low >= high) return; /* base case */
+ int pivot = low + (high - low) / 2; /* one of many techniques */
+ 
+ pivot = partition(storage, low, high, pivot);
+ 
+ quickSortInternal (storage, low, pivot - 1); // first recursive call
+ quickSortInternal (storage, pivot + 1, high); // second recursive call
+}
+
+int partition(double stroage[ ], int low, int high, int pivot){
+  double pivotValue = storage[pivot];
+  swap(pivot, low, storage[]);
+  int i = low + 1, j = high;
+
+  while(i < j) {
+    if (stroage[i] > pivotValue) {
+      swap(i, j, storage[]);
+      j--;
+    } else {
+      i++;
+    }
+  }
+
+  swap(pivot, low, storage[]);
+  return pivot;
+}
+
+void swap(int i, int j, double arr[]) {
+  double temp = arr[i];
+  arr[i] = arr[j];
+  arr[j] = temp;
+}
+```

@@ -167,11 +167,79 @@ Consider the structure of the function, for example to ensure that every if stat
 statement is executed, and that every condition is evaluated both true and false. 
 
 ***
+## Program Proof - Selection Sort as an example
 
+Definition : Find the index of the largest element in an array. Swap the largest value into the final location in the array. Then do the same with the next largest element. Then the next largest, and so on until you reach the smallest element. At that point the array will be sorted.
+
+
+The first asserts what must be true before the loop starts, and the last must be what we want to be true
+after the loop finishes, which is normally the outcome we desire.
+
+```java
+double storage [ ];
+ ...
+int indexLargest = 0;
+int position = n – 1;
+// 1. indexLargest is the index of the largest element in the range 0 .. 0
+
+for (int i = 1; i <= position; i++) {
+
+  // 2. indexLargest is the index of the largest element in the range 0 .. (i-1)
+ if (storage[i] > storage[indexLargest])
+ indexLargest = i;
+
+ // 3. indexLargest is the index of the largest element in the range 0 .. i
+}
+
+// 4. indexLargest is index of largest element in the range 0 .. (storage.length-1)
+```
+
+
+Finding the largest value is a task that must be performed repeatedly. It is first performed
+to find the largest element in the array, and then the next largest, and then the one before
+that, and so on. So again a loop seems to be called for. Since we are looking for the
+largest value to fill a given position, let us name this loop variable position. The loop that
+is filling this variable looks as follows:
+
+```java
+for (position = n – 1; position > 0; position--) {
+ // find the largest element in 0 .. position
+ int indexLargest = 0;
+ ...
+ // then swap into place
+ swap(storage, indexLargest, position);
+ // Noew indexLargest have the largest number in the memory
+}
+```
+***
+
+## Exponential and Logarithm Function
+
+The exponential is the function you get by repeated multiplication. 
+
+In computer science we almost always use powers of two, and so the exponential sequence is 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, and so on. 
+
+The logarithm is the inverse of the exponential. It is the number that a base (generally 2) must be raised to in order to find a value. 
+
+If we want the log (base 2) of 1000, for example, we know that it must be between 9 and 10. This is because 29 is 512, and 210 is 1024. Since 1000 is between these two values, the log of 1000 must be between 9 and 10. The log is a very slow growing function. The log of one million is less than 20, and the log of one billion is less than 30.
+
+```
+The log, base 2, of a value n is
+approximately equal to the number of times that
+n can be split in half. The word approximately is
+used because the log function yields a fractional
+value, and the exact figure can be as much as
+one larger than the integer ceiling of the log. But
+integer differences are normally ignored when
+discussing asymptotic bounds
+```
 
 ***
 
 # Big O notation 
+
+
+What a big-oh characterization of an algorithm does is to abstract away unimportant distinctions caused by factors such as different machines or different compilers. Instead, it goes to the heart of the key differences between algorithms. 
 
 [big-O notation(Stack Overflow)](https://stackoverflow.com/questions/2307283/what-does-olog-n-mean-exactly)
 
@@ -342,3 +410,162 @@ for(int j = 0; j * j < n; j++)
 | sqrt(n) square root| Root-in     |
 | Log n    | Logarithmic |
 | 1        | Constant    |
+
+
+***
+
+## Recursive Function
+
+The analysis of recursive functions is slightly more complicated than the analysis of algorithms with loops. A useful technique is to describe the execution time using a recurrence relation. 
+
+|Recyrrebce relactions|Time Complexity |
+|:-------------------:|:--------------:|
+|T(n) = T(n - 1) + c  | O(N) |
+|T(n) = T(n / 2) + c  | O(logN) |
+|T(n) = 2 * T(n / 2) + cn + c | O(nlogN)|
+|T(n) = 2 * T(n - 1) + c| O(2^n) | 
+
+
+## Proof of Binary Search Time Complexity
+Through O(1) time, to change the problem scale of n into a scale of n/2.
+
+```
+T(n) = T(n/2) + O(1)
+= T(n/4) + O(1) + O(1)
+= T(n/8) + 3 * O(1)
+= T(n/16) + 4 * O(1)
+.
+.
+.
+= T(1) + logn * O(1)
+
+T(n) = O(logn)
+```
+
+Through O(n) time, to change the problem scale of n into a scale of n/2.
+
+```
+T(n) = T(n/2) + O(n)
+= T(n/4) + O(n/2) + O(n)
+= T(n/8) + O(n/4) + O(n/2) + O(n)
+.
+.
+.
+= T(1) + O(n + n/2 + n/4 + ...+ 2 + 1)
+= O(2n - 1)
+= O(n)
+```
+
+***
+
+## Divide and Conquer
+
+The general idea of dividing a problem into two roughly equal problems of the same form is known as the “divide and conquer” heuristic. We have earlier shown that the number of time a collection of size n can be repeatedly split in half is log n. Since log n is a very small value, this leads to many efficient algorithms. 
+
+
+## Merge Sort O(nlogn)
+
+### Merge Algorithm O(n)
+
+For merge sort the key insight is that two already sorted arrays can be very rapidly merged together to form a new collection. All that is necessary is to walk down each of the original lists in order, selecting the smallest element in turn.
+
+When you reach the end of one of the arrays (you cannot, in general, predict which list
+will end first), you must copy the remainder of the elements from the other.
+Based on this description you should now be able to complete the implementation of the
+merge method. This you will do in worksheet 12. Let n represent the length of the result.
+At each step of the loop one new value is being added to the result. Hence the merge
+algorithm is O(n).
+
+### Sort Algorithm (D&C) O(logn)
+
+The key is to think recursively.
+
+Imagine sorting as a three-step process. In the first step an unordered array of length n is broken into two unordered arrays each containing approximately half the elements of the original. (Approximately, because if the size of the original is odd, one of the two will have one more element than the other). Next, each of these smaller lists is sorted by means of a recursive call. Finally, the two sorted lists are merged back to form the original.
+
+Notice a key feature here that is characteristic of all recursive algorithms. We have solved a problem by assuming the ability to solve a “smaller” problem of the same form. The meaning of “smaller” will vary from task to task. Here, “smaller” means a smaller length array. The algorithm demonstrates how to sort an array of length n, assuming you know how to sort an array (actually, two arrays) of length n/2. 
+
+
+## Implementation of Merge Sort
+
+The only actions are to separate the array into two parts, recursively sort them, and merge the results.
+
+However, the merge operation cannot be performed in place. Therefore the merge sort algorithm requires a second temporary array, the same size as the original. The merge operation copies values into this array, then copies the array back into the original location.
+
+### Merge Sort In C language
+```c
+void mergeSort (double data [ ], int n) {
+ double * temp = (double *) malloc (n * sizeof(double));
+ assert (temp != 0); /* make sure allocation worked */
+ mergeSortInternal (data, 0, n-1, temp);
+ free (temp);
+}
+
+void mergeSortInternal (double data [ ], int low, int high, double temp [ ]) {
+ int i, mid;
+ if (low >= high) return; /* base case */
+ mid = (low + high) / 2;
+ 
+ mergeSortInternal(data, low, mid, temp); /* first recursive call */
+ mergeSortInternal(data, mid+1, high, temp); /* second recursive call */
+ 
+ merge(data, low, mid, high, temp); /* merge into temp */
+ 
+ for (i = low; i <= high; i++) /* copy merged values back */
+ data[i] = temp[i];
+}
+
+void merge(double data [ ], int low, int mid, int high, double temp [ ]) {
+  // Need to do merge in C
+}
+
+```
+
+### Merge Sort in Java
+
+```java
+  public static int[] mergeSort(int[] arr) {
+        if(arr == null) return arr;
+        int[] helper = new int[arr.length];
+        doSort(arr, helper, 0, arr.length -1);
+        return arr;
+    }
+
+    private static void doSort(int[] arr, int[] helper, int start, int end) {
+        // End the recursion
+        if(start >= end) return;
+
+        int mid = start + (end - start) / 2;
+        // Sort left side
+        doSort(arr, helper, start, mid);
+        // Sort right side
+        doSort(arr, helper, mid + 1, end);
+
+        merge(arr, helper, start, mid, end);
+    }
+
+    private static void merge(int[] arr, int[] helper, int aStart, int aEnd, int bEnd) {
+        // Copy arr from aStart to bEnd
+        for (int i = aStart; i <= bEnd; i++ ) {
+            helper[i] = arr[i];
+        }
+
+        int aCur = aStart;
+        int bCur = aEnd + 1;
+
+        for(int i = aStart; i <= bEnd; i++ ) {
+            if (aCur > aEnd){
+                // use out a
+                arr[i] = helper[bCur++];
+            } else if (bCur > bEnd){
+                // use out b
+                arr[i] = helper[aCur++];
+            } else if (helper[aCur] <= helper[bCur]) {
+                // a < b
+                arr[i] = helper[aCur++];
+            } else {
+                arr[i] = helper[bCur++];
+            }
+
+        }
+    }
+```

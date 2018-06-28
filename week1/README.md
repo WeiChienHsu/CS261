@@ -782,3 +782,90 @@ argument to be printed
 2. %f – double, in fixed-point notation (e.g. 3.1415…) float arguments are cast as double
 3. %c – char, as a character
 4. %s – a null-terminated string
+
+```c
+#include <stdio.h>
+
+/* Prototype the function */
+void foo(int);
+
+int main(int argc, const char * argv[]) {
+    foo(4);
+    return 0;
+}
+
+void foo(int num) {
+    printf("%d\n", num);
+}
+```
+
+
+## C has no reference types, unlike C++! 
+
+That means functions are all pass-by-value.
+
+- In other words, a copy of each argument is passed to the
+function as a parameter.
+- Passing big structures can be a problem with small stack sizes.
+- More under “pointers” below.
+
+## C is procedural, not object oriented like C++.
+
+- Operate on data by passing it as arguments to functions.
+- No classes or class methods.
+- Structured data represented with struct.
+
+### In C++
+```
+Student s = new Student("Kevin");
+s.yell();
+```
+
+### In C
+```c
+struct student {
+    char* name;
+    int standing;
+    float gpa;
+};
+
+int main(){
+    struct student s = {.name = "Kevin", .gpa = 4.0 };
+    s.standing = 1;
+    printf("%d\n", s.standing);
+    return 0;
+}
+```
+
+## Pointers
+
+A pointer is a variable whose value is a memory address.
+
+A few important things here:
+
+* acts as both a pointer variable designator (int*) and as the dereference operator (*i_ptr).
+* The dereference operator gives you 【the value at an address.】
+* zs& is the “address-of” operator.
+
+
+```c
+int i = 20;
+int* i_ptr = &i;
+printf("%d\n", i); /* Print 20 */
+printf("%p\n", i_ptr); /* Print memory Address : 0x7ffeefbff608*/
+printf("%d\n", *i_ptr); /* Print the deference value from memory Address : 0x7ffeefbff608*/
+
+*i_ptr = 8;
+printf("%d\n", i); /* Print 8 */
+printf("%p\n", i_ptr); /* Print memory Address*/
+printf("%d\n", *i_ptr); /* Print the deference value from memory Address*/
+```
+
+
+C, unlike C++, has no pass-by-reference, but we can achieve the
+same thing with pointers:
+
+```c
+
+
+```

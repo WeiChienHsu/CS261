@@ -707,3 +707,57 @@ void swap(int i, int j, double arr[]) {
   arr[j] = temp;
 }
 ```
+***
+
+### Worst case, best case, and average case
+Quicksort also has different worst-, best-, and average-case complexities:
+- Worst case: O(n ^ 2).
+- Best case: O(n log n).
+- Average case: O(n log n).
+- Quicksort is still widely used because the worst case is very rare and the ignored constant factors make it typically faster than other O(n log n) sorts.
+
+### Different execution time
+
+The execution time of quicksort depends upon selecting a good pivot value. Many heuristics have been proposed for this task. These include:
+
+- Selecting the middle element, as we have done
+-  Selecting the first element. This avoids the initial swap, but leads to O(n2) performance in the common case where the input is already sorted
+- Selecting a value at random
+- Selecting the median of three randomly chosen values
+
+***
+
+## Example of Big Oh Analysis
+
+```java
+sum = 0;
+for(int i = 0; i < n; i++) {
+  sum += array[i];
+}
+return sum;
+```
+
+- The instruction sum = 0 executes in some constant time c1 independent of n.
+- Each iteration of the loop executes in some constant time c2 and this happens n times.
+- The return statement executes in some constant time c3 independent of n.
+- So runtime is c1 + c2 n + c3.
+
+-  c1, c2, and c3 depend on the particular computer running this function, so we ignore them to figure out run-time complexity.
+
+- Thus, we say this sum function grows on the order of n, or, in other words that it is O(n).
+- This is also known as a linear-time function.
+
+
+***
+
+## Nest loop - time complexity
+
+So, for example, when an O(n) loop is nested within another O(n) loop, the total complexity is O(n^2). 
+
+Similarly:
+
+- O(√n) loop inside O(n) loop (and vice versa) → O(n√n).
+- O(log n) loop inside O(n) loop (and vice versa) → O(n log n).
+- O(√n) loop inside O(√n) loop → O(n).
+- O(log n) loop inside O(log n) loop → O(log2 n).
+- O(n) loop inside O(n) loop inside O(n) loop → O(n^3).

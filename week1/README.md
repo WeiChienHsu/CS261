@@ -515,7 +515,43 @@ void mergeSortInternal (double data [ ], int low, int high, double temp [ ]) {
 }
 
 void merge(double data [ ], int low, int mid, int high, double temp [ ]) {
-  // Need to do merge in C
+
+  /* Temp pointer */
+  int k = 0; 
+  
+  int leftStart = low, leftEnd = mid;
+  int rightStart = mid + 1, rightEnd = high; 
+
+  /* Merge two seperate one by comparing their first element and move the current pointer */
+
+  while(leftStart <= leftEnd &&  rightStart <= rightEnd) {
+
+    if(data[leftStart] <= data[rightStart]) {
+
+      /* Put left one into the temp array */
+      temp[k++] = data[leftStart++];
+    }
+    else {
+
+      /* Put Right one into the temp array */
+      temp[k++] = data[rightStart++];
+    }
+  }
+
+  /* When one of the subarray is pointed to the end */
+
+  while(leftStart <= leftEnd) {
+    temp[k++] = data[leftStart++];
+  }
+
+  while(rightStart < rightEnd) {
+    temp[k++] = data[rightStart++];
+  }
+
+  /* copy merged values back */
+  for(i = 0; i < k; i++) {
+    data[low + i] = temp[i];
+  }
 }
 
 ```

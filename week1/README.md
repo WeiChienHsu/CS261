@@ -761,3 +761,24 @@ Similarly:
 - O(√n) loop inside O(√n) loop → O(n).
 - O(log n) loop inside O(log n) loop → O(log2 n).
 - O(n) loop inside O(n) loop inside O(n) loop → O(n^3).
+
+***
+
+# C Review 
+
+## Printing to stdout: printf()
+printf() is the C way of printing stuff to stdout; there are no
+streams in C.
+
+printf() uses a format string as a template for the output.
+
+- Format specifiers, designated by %, act as placeholders into which additional printf() arguments are inserted.
+
+- The i’th printf() argument goes to the i’th format specifier.
+- In general, the character after the % indicates the type of the
+argument to be printed
+
+1. %d – int, as a signed decimal number
+2. %f – double, in fixed-point notation (e.g. 3.1415…) float arguments are cast as double
+3. %c – char, as a character
+4. %s – a null-terminated string

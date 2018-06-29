@@ -601,7 +601,6 @@ void merge(double data [ ], int low, int mid, int high, double temp [ ]) {
             } else {
                 arr[i] = helper[bCur++];
             }
-
         }
     }
 ```
@@ -666,7 +665,7 @@ If neither of these two conditions is true the values at the i and j positions c
 
 The loop proceeds until the values of i and j meet and pass each other. When this happens we know that all the elements with index values less than i are less than or equal to the pivot. This will be the first section. All those elements with index values larger than or equal to i are larger than or equal to the pivot. This will be the second section. The pivot is swapped back to the top of the first section, and the location of the pivot is returned.
 
-
+### Quick Sort In C language
 
 ```c
 void quickSort (double storage [ ], int n){ 
@@ -861,11 +860,84 @@ printf("%p\n", i_ptr); /* Print memory Address*/
 printf("%d\n", *i_ptr); /* Print the deference value from memory Address*/
 ```
 
-
 C, unlike C++, has no pass-by-reference, but we can achieve the
 same thing with pointers:
 
 ```c
+void make_32(int* num) { /* Pass the pointer */
+    *num = 32; /* Deference and assign the value */
+}
 
-
+int main() {
+  int a = 30;
+  printf("%d \n", a); /* print 30 */
+  make_32(&a); /* Pass the 'address' into the function (Not passed by reference) */
+  printf("%d \n", a); /* print 32 */
+}
 ```
+
+***
+
+# Program memory - Call Stack vs The Heap
+
+A running C program (or a program in any language, for that matter) has two separate areas of memory in which it can store data, the call stack and the heap.
+
+-  The call stack​ is a small, limited-size chunk of memory from the larger blob of system memory. Among other things, the values of variable declared in a program’s functions are stored on the call stack.
+
+- The call stack is small: usually at most 8kb. The heap​ comprises essentially all the rest of system memory.
+
+-  A program must specifically request to allocate memory from out of the heap. the heap is huge compared to the call stack.
+
+
+# Allocating memory on the heap
+
+### malloc()
+The call stack is small (e.g. only 2048 4-byte integers fit on an 8kb stack). We need to be able to work with more memory.
+
+We’ll need to start allocating from the heap.
+
+```c
+void* mem_block = malloc(NUMBER_OF_BYTES);
+```
+
+###  A few things to note:
+- Must #include <stdlib.h>
+- malloc() allocates a contiguous block of memory.
+- This is useful for allocating arrays.
+- malloc() returns a pointer of type void*.
+- This can be cast to any type.
+- We need to know how many bytes we need to allocate.
+
+### sizeof()
+
+We use sizeof() to help figure out how many bytes to
+allocate, e.g.:
+
+```c
+printf("sizeof(int): %d \n", sizeof(int)); /* 4 */
+```
+
+### Generally use sizeof() in conjunction with malloc()
+- allocate single intger
+
+```c
+int k = 13;
+int* i_ptr = (int*)malloc(sizeof(int));
+
+*i_ptr = k;
+printf("*i_ptr: %d", *i_ptr); // Prints 13
+```
+
+- allocate arrays:
+
+```c
+int i, n = 4096;
+int* nums = (int*)malloc(n * sizeof(int));
+  int index = 0;
+  for (i = 2; i < n; i*=2) {
+  nums[index++] = i;
+} 
+```
+***
+
+## malloc() and struct

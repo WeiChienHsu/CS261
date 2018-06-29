@@ -941,3 +941,154 @@ int* nums = (int*)malloc(n * sizeof(int));
 ***
 
 ## malloc() and struct
+
+```c
+struct student *s = malloc(sizeof(struct student));
+(*s).name = "Luck";
+(*s).gpa = 3.0;
+s->name = "Nick";
+s->gpa = 5.0;
+```
+
+Something to notice: students[i] is a dereferenced memory
+address (a pointer).
+
+We see here that (students + 13) is the same thing as
+&students[13].
+
+
+This can allow you to factor your code nicely, something like this:
+
+```c
+int n = 5, i;
+struct student* students = malloc(n * sizeof(struct student));
+
+for (i = 0; i < n; i++) {
+    init_student(students + i, "Dick", 2 + i);
+}
+
+for(i = 0; i < n; i++) {
+    printf("%s : %f \n",students[i].name, students[i].gpa);
+}
+```
+
+***
+
+## Freeing malloc()’ed memory
+
+- Need to have this on the header
+```c
+#include <stdlib.h> 
+```
+
+We MUST​ free all of the memory we allocate using malloc(), otherwise our program will have memory leaks.
+
+To free memory, we use free().
+
+A good rule of thumb is this: For every call to malloc() you should have a call to free().
+
+To use free(), just pass the pointer that was returned by malloc(), no matter whether that pointer represents a single item, an array, a struct, or whatever, e.g
+
+```c
+int* i = malloc(sizeof(int));
+
+free(i);
+
+int* nums = malloc(1000000 * sizeof(int));
+
+free(nums);
+
+struct student* s = malloc(sizeof(struct student));
+
+free(s);
+
+struct student* students = malloc(1000 * sizeof(struct student));
+
+free(students);
+```
+
+
+## Avoid Memory Leak (valgrind)
+
+valgrind is a great tool for helping debug memory issues.
+
+To run a program with valgrind, you need to compile it with debug flags using the -g option:
+
+```
+gcc --std=c99 -g prog.c -o prog
+```
+
+- The just pass your program to valgrind:
+
+```
+valgrind ./prog [args to prog]
+```
+
+valgrind will run your program and detect memory leaks. If you have any leaks, it will let you know that some memory was "lost"
+
+To dig deeper into where the memory was lost, use valgrind--leak-check=full:
+
+```
+valgrind --leak-check=full ./prog [args]
+```
+
+This will give you a report with the line numbers of the malloc() calls for the memory that was lost.
+
+***
+
+# C strings
+
+In C, strings are just arrays of characters, but there are some things to be aware of.
+
+- This doesn’t do what you might expect:
+```c
+char* str = "foo";
+```
+
+- That actually allocates static, read-only memory, so that you couldn’t later do this:
+
+```c
+str[2] = 'x'; // You can’t do this.
+```
+
+- If you initialize a string that way, you really should use const:
+```
+const char* str = "foo";
+```
+
+- Otherwise, you can allocate a string just like any other array:
+
+```c
+int n = 64;
+char* str = malloc(n * sizeof(char));
+```
+
+- Then, you have lots of functions available to help you get data into that string, e.g.:
+```c
+#include <string.h>
+strncpy(str, src_str, n); 
+// Copy up to n chars.
+```
+```c
+#include <stdio.h>
+snprintf(str, n, "%s %d", some_str, some_int);
+// Use a format string to initialize.
+```
+
+
+## Segmentation faults and debugging with gdb
+
+A segmentation fault (segfault) is a memory access violation
+
+- i.e. when a program tries to access a memory location in a way
+that’s not allowed.
+
+- Working with pointers, arrays, and memory allocation, you will have segfaults.
+
+- Common causes are trying to dereference a NULL pointer or an uninitialized pointer.
+
+```c
+struct student* s;
+s->name = "Luke Skywalker"; // Woops! Didn’t
+// allocate s.
+```

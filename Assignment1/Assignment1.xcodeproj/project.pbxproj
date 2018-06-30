@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BE086E3020E563F100A2DCAE /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = BE086E2F20E563F100A2DCAE /* main.c */; };
 		BE7AE11120E72EEA00C59A5F /* pointer.c in Sources */ = {isa = PBXBuildFile; fileRef = BE7AE11020E72EEA00C59A5F /* pointer.c */; };
+		BE7AE11320E739FA00C59A5F /* playGround.c in Sources */ = {isa = PBXBuildFile; fileRef = BE7AE11220E739FA00C59A5F /* playGround.c */; };
+		BE7AE11720E73A7F00C59A5F /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = BE7AE11620E73A7F00C59A5F /* main.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,8 +26,9 @@
 
 /* Begin PBXFileReference section */
 		BE086E2C20E563F100A2DCAE /* Assignment1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Assignment1; sourceTree = BUILT_PRODUCTS_DIR; };
-		BE086E2F20E563F100A2DCAE /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		BE7AE11020E72EEA00C59A5F /* pointer.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = pointer.c; sourceTree = "<group>"; };
+		BE7AE11220E739FA00C59A5F /* playGround.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = playGround.c; sourceTree = "<group>"; };
+		BE7AE11620E73A7F00C59A5F /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +45,7 @@
 		BE086E2320E563F100A2DCAE = {
 			isa = PBXGroup;
 			children = (
+				BE7AE11420E73A1B00C59A5F /* Assignment0 */,
 				BE086E2E20E563F100A2DCAE /* Assignment1 */,
 				BE086E2D20E563F100A2DCAE /* Products */,
 			);
@@ -59,10 +62,18 @@
 		BE086E2E20E563F100A2DCAE /* Assignment1 */ = {
 			isa = PBXGroup;
 			children = (
-				BE086E2F20E563F100A2DCAE /* main.c */,
 				BE7AE11020E72EEA00C59A5F /* pointer.c */,
+				BE7AE11220E739FA00C59A5F /* playGround.c */,
 			);
 			path = Assignment1;
+			sourceTree = "<group>";
+		};
+		BE7AE11420E73A1B00C59A5F /* Assignment0 */ = {
+			isa = PBXGroup;
+			children = (
+				BE7AE11620E73A7F00C59A5F /* main.c */,
+			);
+			path = Assignment0;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -122,8 +133,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE086E3020E563F100A2DCAE /* main.c in Sources */,
+				BE7AE11720E73A7F00C59A5F /* main.c in Sources */,
 				BE7AE11120E72EEA00C59A5F /* pointer.c in Sources */,
+				BE7AE11320E739FA00C59A5F /* playGround.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

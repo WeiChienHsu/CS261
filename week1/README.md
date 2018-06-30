@@ -1104,3 +1104,25 @@ struct student* s;
 s->name = "Luke Skywalker"; // Woops! Didn’t
 // allocate s.
 ```
+
+
+***
+
+# Compilation Process
+
+### Pre-processor
+Remove Comments
+Replace pre-processor directive
+Conditional compilation
+
+### Compiler
+Transfer Soucre code to Assembly code.
+
+### Assembler
+Assembler generates object code(.o) from the assembly code. Object code is in binary and can't be viewed with a text reader.
+
+### Linker
+The Linker pulls together your object code with libraries that you're using in your program.
+
+
+

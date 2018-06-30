@@ -891,6 +891,18 @@ A running C program (or a program in any language, for that matter) has two sepa
 
 # Allocating memory on the heap
 
+我們在使用 Pointer to Struct 的時候，記得要 init 這個 pinter 指向的位置，因為在一開始定義一個pointer的時候，他只有在記憶體裡面圈出一塊屬於 Pointer 的位置
+
+```c
+struct student* kevin = malloc(sizeof(struct student));
+
+setStudent(kevin, "Kevin", 2, 3.2);
+
+printStudentInfo(kevin);
+
+free(kevin);
+```
+
 ### malloc()
 The call stack is small (e.g. only 2048 4-byte integers fit on an 8kb stack). We need to be able to work with more memory.
 

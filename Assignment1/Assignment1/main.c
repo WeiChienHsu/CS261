@@ -66,18 +66,20 @@ int main(){
 //    s->gpa = 5.0;
 //
     
-    int n = 5, i;
-    struct student* students = malloc(n * sizeof(struct student));
+//    int n = 5, i;
+//    struct student* students = malloc(n * sizeof(struct student));
+//
+//    for (i = 0; i < n; i++) {
+//        init_student(students + i, "Dick", 2 + i);
+//    }
+//
+//    for(i = 0; i < n; i++) {
+//        printf("%s : %f \n",students[i].name, students[i].gpa);
+//    }
+//
+//    free(students);
     
-    for (i = 0; i < n; i++) {
-        init_student(students + i, "Dick", 2 + i);
-    }
-    
-    for(i = 0; i < n; i++) {
-        printf("%s : %f \n",students[i].name, students[i].gpa);
-    }
-    
-    free(students);
+    pointerPlayGround();
     
     return 0;
 }

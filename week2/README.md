@@ -59,6 +59,54 @@ Con: fixed size.
 - Hide memory management details behinf a simple API
 - Is still randomly accessible, but now it grows as necessary.
 
+Can change its capacity:
+
+### Size
+is logical collection size:
+- Current number of elements in the dynamic array
+- What the programmer thinks of as the size of the collection
+- Managed by an internal data value
+
+### Capacity
+is pysical array size: # of element it can hold before it must "resize".
 
 
+## Behavior - Adding an element to 【end】 
 
+Addint an element to end is usually easy -> Just increase the logical size and put new value at the end.
+
+### What happens when size reaches capacity?
+
+Must reallocate new data array - but this detail is hidden from user.
+
+- Allocate new (Larger) array and copy valid data element (Double the size of capacity)
+- Free up the old array 
+
+
+## Behavior - Adding an element to 【middle】
+- Adding an element to middle can also force reallocation (If the cuurent size is equal to capacity)
+
+- But will ALWAYS require that elements be moved to make space. We want to maintain a contiguous chunk of data so we always know where the next element goes and can put it there quickly.
+
+- Is therefore O(n) worst case. （Double capacity and copy while n array)
+
+- Make space for new Value: Loop from bottom up while copting data.
+
+```
+1 | 2 | 3 | 4 | 5 |  |
+
+** add element 6 behind 4
+
+1. Copy 5 to the next
+
+1 | 2 | 3 | 4 | 5 | 5 | 
+
+
+2. Copy 4 to the next
+
+1 | 2 | 3 | 4 | 4 | 5 | 
+
+3. When we find the target inedx, Put element 6 in that position
+
+1 | 2 | 3 | 6 | 4 | 5 | 
+```

@@ -114,12 +114,14 @@ void summary(struct student* students){
 
 void deallocate(struct student* stud){
      /*Deallocate memory from stud*/
-     free(stud);
+     if(stud != NULL) {
+       free(stud);  
+     }
+     
 }
 
 int main(){
     struct student* st = 0;
-    
     /*Call allocate*/
     st = allocate();
     /*Call generate*/

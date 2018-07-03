@@ -110,3 +110,74 @@ Must reallocate new data array - but this detail is hidden from user.
 
 1 | 2 | 3 | 6 | 4 | 5 | 
 ```
+
+***
+
+## Implmentation Of Dynamic Array
+
+- How to make a general purpose container class?
+- We defin TYPE as symbolic proprocessor constant.
+- Requires recompiling source for new element types.
+
+### Provide a header fule
+
+```c
+#ifndef __DYNARR_H
+#define __DYNARR_H
+
+#define TYPE int
+#define TYPE_SIZE sizeof(TYPE)
+
+#define LT(a, b) ((a) < (b))
+#define EQ(a, b) ((a) == (b))
+
+#include <stdio.h>
+
+struct DynArr {
+    TYPE *data; /* Pointer to data array. */
+    int size;
+    int cap;
+};
+
+/* Dynamic Array Function */
+void initDynArr(struct DynArr *v, int cap);
+void freeDynArr(struct DynArr *v);
+int sizeDynArr(struct DynArr *v);
+void addDynArr(struct DynArr *v, TYPE e);
+TYPE getDynArr(struct DynArr *v, int pos);
+void putDynArr(struct DynArr *v, int pos, TYPE val);
+
+#endif /* dynarr_h */
+
+```
+
+### Better Solution - Hide the Struct inside the .c file (Source file)
+
+To use a struct dynArr, the user must declare one. To declare it, the compiler must know its size when compiling that file.(ex, it must be in the header)
+
+If it's in the header, it's 'exposed' to the end user and this can be dangerous and violates 'encapsulation'.
+
+Better Solution: Provide new and delete functions for your data structure. New Returs a pointer to allocated space.
+
+User can always decalare pointers and compiler always knows the size of a pointer! And we can hide the Struct in the .c fule or a library.
+
+### When to use Dynamic Arrays
+- Need random access
+- Low memory footprint
+- Don't know size of array at compile time
+- See Examples in Java and C++ STL
+- When should not use a dynamic array -> When O(n) resize is NEVER acceptable.
+
+***
+
+
+***
+
+
+***
+
+
+***
+
+
+***

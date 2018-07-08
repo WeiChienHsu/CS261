@@ -170,14 +170,147 @@ User can always decalare pointers and compiler always knows the size of a pointe
 
 ***
 
+# Stack
 
-***
+Stack operations obey the last-in first out principles.
+
+Remove all the items from a stack could access them in reverse order.
+
+Use case: Web browser have Back and Forward buttons that allow the user to move backwards and forwards through a series of web page. Back button returns the browser to the previous web page. This works because browser is maintining a stack containing links to web pages.
+
+## Operations
+- Push(newEntry) - O(1) - Place a new element into the collection. The value provided becomes the new topmost item in the collection. No output associated with push operation.
+
+- Pop() - O(1) - Remove the topmost item from the stack
+
+- Top() - O(1) - Return but does not remove, the topmost item from the stack.
+
+- isEmpty() - O(1) - Determines whether the stack is empty
 
 
-***
+## ADT
+
+Stack is combined with other abstractions, such as a dynamic array. In this situation the data structure allows other operations, such as a search or direct access to elements.
+
+- Java
+
+```java
+Stack<Integer> stack = new Stack<>();
+stack.push(Integer);
+stack.peek() // Return value of Integer
+stack.pop(); // Pop Integer out
+stack.isEmpty() // Return Rrue or False
+```
+
+- C++
+
+```c++
+Stack stack = new Stack();
+stack.push(int);
+stack.pop();
+stack.top();
+stack.isEmpty();
+```
+
+- Python
+
+```python
+stack = list[]
+stack.append(value) # push
+Del stack[-1] # pop
+stack[-1] # top
+len(stack) == 0 # empty
+```
+
+## Stack Implementaion - Web Browser
+
+### Question 1
+
+The user of a web browser can also move to a new page by selecting a hyperlink. In fact, this is probably more common than using either the back or forward buttons. When this happens how should the contents of the back and forward stacks be changed?
+
+There are two different Stack. One is:
+
+- Backward Stack: When you click a new hyperlink, or forward button, browser will store that page into this Stack.
+
+- Forward Stack: When you click a backward button, the current browser will store in this Stack. But when user click another Link, this Stack will be empty.
+
+### Question 2
+
+Web browsers often provide a history feature, which records all web pages accessed in the recent past. How is this different from the back stack? 
+
+Describe how the history should change when each of the three following conditions occurs: 
+
+- (a) when the user moves to a new page by pressing a hyperlink?
+
+Store current Page into Back Stack and Clean the Forward Stack
+
+- (b) when the user restores an old page by pressing the back button?
+
+Store current Page into Forward Stack and Pop out the Stack peek page.
+
+- (c) when the user moves forward by pressing the forward button?
+
+Store current Page into Back Stack and pop out the forward Stack page.
 
 
-***
+## Stack Implementaion - Buffer Character Input
+
+Operating System uses a Stack in order to corrctly process backsapace keys in lines of input typed at a keyboard. 
+
+```
+abcaaa<<<d -> abcd
+```
+
+## Stack Implementaion - Activation Record Stack (Call Stack)
+
+Image that b hsa the following recursive definiton:
+
+```c
+int b (int p)
+  if(p < 15) return 1;
+  else return 1 + b(p -1)
+```
+
+Each time the function b is invoked a new activation record is created.
+
+```
+P = 17 | P = 16 | P = 15 -> top of stack
+```
 
 
-***
+## Building a Stack using a Dynamic Array
+
+Array is a simple way to store a collection of values.
+
+Only push the element in the last space with an constant amortized execution time. (Average O(1))
+
+
+## Linked List Implementation of Stack
+
+The Alternative implementation approach is to use a linked list with O(1) insert and delete time complexity in the Fist or Last element.
+
+The advantage of the linked list that the collection can grow as large as necessary, and each new addition to the chain of linkes requires only a constant amount of work.
+
+Each Node mantains two data fields, a value and a reference to anotehr link. The last linke in the sequence stores a null value in its link. (Whenever you create a dynamically allocated value you need to think about how and when it will be freed)
+
+Because there are no big block (Not continuous) of memory, it is never necessary to copy an entire block from place to place.
+
+```java
+class ListNode {
+  int val;
+  ListNode next = null; // Default
+  public ListNode(int val) {
+    this.val = val;
+  }
+}
+
+ListNode head = new ListNode(0);
+ListNode current = head;
+current.next = new ListNode(1);
+current = current.next;
+current.next = new ListNode(2);
+
+return head; // Get 0 -> 1 -> 2 -> null
+
+```
+

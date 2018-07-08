@@ -314,3 +314,114 @@ return head; // Get 0 -> 1 -> 2 -> null
 
 ```
 
+***
+
+## Worksheet 17 Linked List Introduction, List Stack
+
+```c++
+struct link {
+  TYPE value; 
+  struct link * next;
+};
+```
+
+```c
+/* Single Linked List Structure */
+
+struct Link {
+  TYPE value;
+  struct Link *next;
+};
+
+struct LinkedListStack {
+  struct Link *firstLink;
+}
+
+void LinkedListStackInit(struct LinkedListStack * s) {
+  s -> fitstLink = NULL;
+}
+
+/*
+Note: Free gets rid of all links but keeps the firstLink of the list around, so
+the list itself still exists and is initialized.
+*/
+
+void LinkedListStackFree(struct linkedListStack *s) {
+  /* Check if the Stack is Empty */
+  while(! linkedListStackIsEmpty(s)) {
+    /* Keep poping elements inside (connected) the Stack *?
+    linkedListStackPop(s);
+  }
+}
+
+/*
+  ** Linked List is empty
+
+    NULL
+    f
+
+    newLink(d) -> NULL
+                  f
+
+    newLink(d) -> NULL
+    f   
+
+  ** Listed List is no empty
+
+    1  ->  2  ->  NULL
+    f
+
+    newLink(d)  ->  1  ->  2  ->  NULL
+                    f
+    
+    newLink(d)  ->  1  ->  2  ->  NULL
+    f
+*/
+
+
+void LinkedListStackPush (struct LinkedistStack *s, TYPE d) {
+  /* Create a new link */
+  struct Link * newLink = (struct Link *) malloc (sizeof(struct Link));
+
+  assert(newLink != NULL);
+
+  /* Assign a value to the new Link */
+  newLink -> value = d;
+
+  /* Point the next pointer from new Link to current first Link */
+  newLink -> next = s -> firstLink;
+
+  /* Move the first Link to the new created link */
+   s -> fitstLink = newLink;
+}
+
+
+TYPE LinkedListStackTop (struct LinkedListStack *s) {
+  assert(s -> firstLink != NULL);
+  return s -> firstLink -> value;
+}
+
+void LinkedListStackPop (struct LinkedListStack *s) {
+  assert(s -> firstLink != NULL);
+
+  /* Store the reference of current top Link */
+  Struct Link* poppedList = s -> firstLink;
+
+  /* Move the first pointer to the next */
+  s -> firstLink = s -> firstLink -> next;
+  
+  /* Cut the old first List out of current Linked List */
+  poppedList -> next = NULL;
+
+  /* Free the memory for both of next pointer and value */
+  free(poppedList);
+}
+
+int LinkedListStackIsEmpty (struct LinkedListStack *s) {
+  if(s -> firstLink == NULL) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+```

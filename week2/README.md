@@ -349,7 +349,7 @@ the list itself still exists and is initialized.
 void LinkedListStackFree(struct linkedListStack *s) {
   /* Check if the Stack is Empty */
   while(! linkedListStackIsEmpty(s)) {
-    /* Keep poping elements inside (connected) the Stack *?
+    /* Keep poping elements inside (connected) the Stack */
     linkedListStackPop(s);
   }
 }

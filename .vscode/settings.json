@@ -1,0 +1,7 @@
+{
+  "C_Cpp.errorSquiggles": "Disabled",
+  "files.associations": {
+    "limits": "c",
+    "type_traits": "c"
+  }
+}

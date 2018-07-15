@@ -425,3 +425,261 @@ int LinkedListStackIsEmpty (struct LinkedListStack *s) {
   }
 }
 ```
+
+***
+
+## Linked List Queue, pointer to Tail
+
+```c
+struct link {
+  TYPE value;
+  struct link *next;
+};
+
+struct listQueue {
+  struct link *firstLink;
+  struct link *lastLink; 
+};
+
+void listQueueInit(struct listQueue *q) {
+  struct link *lnk = (struct link*) malloc(sizeof(struct link));
+  assert(lnk != NULL); /* lnk is the sentinel */
+  lnk -> next = NULL;
+  q -> firstLink = q -> lastLink = lnk;
+}
+
+void listQueueAddBack(struct listQueue *q, TYPE e) {
+  struct link *newLink = (struct link*) malloc(sizeof(struct link));
+  assert(newLink != NULL);
+  newLink -> value = e;
+  newLink -> next = NULL;
+
+  if(lnk -> next == NULL) {
+    lnk.next = newList;
+    q -> firstLink = newLink;
+    q -> lastLink = newLink;
+  } else {
+    q -> lastLink -> next = newLink;
+    q -> lastLink = q -> lastLink.next;
+  }
+}
+
+TYPE listQueueFront(struct listQueue *q) {
+  if(listQueuIsEmpty(q)) {
+    return NULL;
+  } else {
+    return q -> firstLink -> value;
+  }
+}
+
+TYPE listQueueRemoveFront(struct listQueue *q) {
+  if(!listQueueIsEmpty(q)) {
+    struct link * temp = (struct link *) malloc(sizeof(struct link));
+    temp = q -> firstLink;
+    q -> firstLink = q -> firstLink -> next;
+    temp -> next = NULL;
+
+    free(temp);
+  }
+}
+
+int listQueueIsEmpty(struct listQueue *q) {
+  if(q -> firstLink == q -> lastLink) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+```
+
+## Linked List Deque
+
+```java
+struct dlink{
+  TYPE value;
+  struct dlink* next;
+  struct dlink* prev;
+};
+
+struct linkedList {
+  int size;
+  struct dlink* frontSentinel;
+  struct dlink* backSentinel;
+}
+
+void LinkedListLnit(struct linkedList *q) {
+  q -> frontSentinel = (struct dlink *) malloc (sizeof(struct dlink));
+  assert(q -> frontSentinel != NULL);
+  q -> backSentinel = (struct dlink *) malloc (sizeof(struct dlink));
+  assert(q -> backSentinel != NULL);
+  q -> frontSentinel -> next = q -> backSentinel;
+  q -> backSentinel -> next = q -> frontSentinel;
+  q -> size = 0;
+}
+
+void LinkedLitFree(struct linkedList *q) {
+  while(q -> size != 0) {
+    linkedListRemoveFront(q);
+  }
+  free(q -> frontSentinel);
+  free(q -> backSentinel);
+  q -> frontSentinel = q -> backSentinel = NULL;
+}
+
+void _addLink(struct linkedList *q, struct dlink *lnk, TYPE e) {
+    assert(q != NULL);
+    struct dlink *newLink = malloc(sizeof(struct dlink));
+    newLink -> value = e;
+
+    /* Link the new sentinel */
+    newLink -> prev = lnk -> prev;
+    newLink -> next = lnk;
+
+    /* Link the old sentinel */
+    lnk -> prev = newLink;
+
+    if(lnk != q -> backSentinel) {
+      q -> frontSentinel -> next = newLink;
+    }
+
+    q -> size ++;
+
+    
+}
+
+void _removeLink(struct linkedList *q, struct dlink *lnk) {
+  assert(q != NULL)
+  /* Remove lnk */
+  lnk -> prev -> next = lnk -> next;
+  lnk -> next -> prev = lnk -> prev;
+
+  /* Unlink lnk */
+  lnk -> prev = NULL;
+  lnk -> next = NULL;
+
+  /* Free Link */
+  free(lnk);
+
+  q -> size --;
+}
+
+
+void LinkedListAddFront (struct linkedList *q, TYPE e) { 
+  _addLink(q, q -> frontSentinel->next, e); 
+}
+
+void LinkedListAddback (struct linkedList *q, TYPE e) { 
+  _addLink(q, q -> backSentinel, e); 
+}
+
+void linkedListRemoveFront (struct linkedList *q) { 
+  assert(! linkedListIsEmpty(q));
+  _removeLink (q, q -> frontSentinal -> next);
+}
+
+void LinkedListRemoveBack (struct linkedList *q) { 
+  assert(! linkedListIsEmpty(q));
+  _removeLink (q, q -> backSentinel -> prev);
+}
+int LinkedListIsEmpty (struct linkedList *q) { 
+  return q->size == 0;
+}
+```
+
+
+## Dynamic Array Deque and Queue
+```c
+struct deque {
+  TYPE* data;
+  int capacity;
+  int size; 
+  int begin;
+}
+
+void dequeInit(struct deque *d, int initCapacity) {
+  d->size = d->begin = 0;
+  d -> capacity = initCapacity;
+  asset(initCapacity > 0);
+  d -> data = (TYPE *) malloc (initCapacity * sizeof(TYPE));
+  asset(data -> data != NULL)
+}
+
+void _dequeSetCapacity(struct deque *d, int newCap) {
+  /* Create a new underlying array */
+  TYEP *newArr = (TYPE*) malloc(sizeof(TYPE)* newCap);
+  asset(newData != NULL)
+
+  /* Copy element into it */
+  int j = d -> begin;
+  for(int i = 0; i < d -> size; i++) {
+    newArr[i] = d -> data[j++];
+    /* Restart from 0 */
+    if(j >= d -> capacity) {
+      j = 0;
+    }
+  }
+
+  /* Delete the old underlying array */
+  free(d -> data);
+
+  d -> data = newData;
+  d -> capacity = newCap;
+  d -> begin = 0;
+}
+
+void dequeFree(struct deque *d) {
+  free(d -> data);
+  d -> size = 0;
+  d -> capacity = 0; 
+}
+
+int dequeSize(struct deque *d) {
+  return d -> size;
+}
+
+void dequeAddFront(struct deque *d, TYPE newValue) {
+  if (d->size >= d->capacity) _dequeSetCapacity(d, 2*d->capacity);
+
+  if (d -> begin == 0) {
+      d -> data[d -> capacity - 1] = newValue;
+      d -> begin = d -> capacity - 1;
+      d -> size ++;
+  } else {
+    d -> data[d -> begin - 1] = newValue;
+    d -> begin --;
+    d -> size ++;
+  }
+}
+
+void dequeAddBack (struct deque *d, TYPE newValue) {
+  if (d->size >= d->capacity) _dequeSetcapacity(d, 2* d->capacity);
+  int index = (d -> begin + d -> size) % d -> capacity;
+  data[index] = newValue;
+  d -> size++;
+}
+
+TYPE dequeFront (struct deque *d) {
+    return d -> data[d -> begin];
+}
+
+TYPE dequeBack (struct deque *d) {
+    int index = (d -> begin + d -> size - 1) % d -> capacity;
+    return d -> data[index];
+}
+
+void dequeRemoveFront (struct deque *d) {
+  if(d -> begin == d -> size - 1) {
+    d -> begin = 0;
+  } else {
+    d -> begin ++;
+  }
+  d -> size --;
+}
+
+void dequeRemoveBack (struct deque *d) {
+  d -> size --;
+}
+```
+
+
+## Constructing a Bag using a Linked List

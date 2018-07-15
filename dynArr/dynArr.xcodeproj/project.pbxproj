@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BEBDC90120EABD4B00238B2A /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC90020EABD4B00238B2A /* main.c */; };
+		BEBDC90920EABD5F00238B2A /* dynarr.c in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC90820EABD5F00238B2A /* dynarr.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,8 @@
 /* Begin PBXFileReference section */
 		BEBDC8FD20EABD4B00238B2A /* dynArr */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = dynArr; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEBDC90020EABD4B00238B2A /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		BEBDC90720EABD5F00238B2A /* dynarr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dynarr.h; sourceTree = "<group>"; };
+		BEBDC90820EABD5F00238B2A /* dynarr.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dynarr.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +61,8 @@
 			isa = PBXGroup;
 			children = (
 				BEBDC90020EABD4B00238B2A /* main.c */,
+				BEBDC90720EABD5F00238B2A /* dynarr.h */,
+				BEBDC90820EABD5F00238B2A /* dynarr.c */,
 			);
 			path = dynArr;
 			sourceTree = "<group>";
@@ -120,6 +125,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BEBDC90120EABD4B00238B2A /* main.c in Sources */,
+				BEBDC90920EABD5F00238B2A /* dynarr.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

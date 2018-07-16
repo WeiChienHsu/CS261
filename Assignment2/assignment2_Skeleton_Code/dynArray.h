@@ -4,7 +4,7 @@
 
 #ifndef __TYPE
 #define __TYPE
-# define TYPE      int
+# define TYPE      char
 # define TYPE_SIZE sizeof(int)
 # endif
 

@@ -681,5 +681,3 @@ void dequeRemoveBack (struct deque *d) {
 }
 ```
 
-
-## Constructing a Bag using a Linked List

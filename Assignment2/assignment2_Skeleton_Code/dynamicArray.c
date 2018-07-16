@@ -2,8 +2,7 @@
 /* Name: Wei-Chien Hsu
  * Date: 07/15/2018
  * Solution description:
- * PART 1 **********************************************************************************
- * Implementation of Dynamic Array, Stack, and Bag
+ * Implementation of Dynamic Array ***************************************** 
  * initDynArr: Initialize (including allocation of data array) dynamic array.
  * newDynArr: Allocate and initialize dynamic array.
  * freeDynArr: Deallocate data array in dynamic array. 
@@ -18,8 +17,18 @@
  * removeAtDynArr: Remove the element at the specified location from the array, shifts 
  * 								 other elements back one to fill the gap.
  * 
- * PART 2 ***********************************************************************************
+ * Implementation of Stack Interface ****************************************
+ * isEmptyDynArr: Returns boolean (encoded in an int) demonstrating whether or not 
+ * 								the dynamic array stack has an item on it.
+ * pushDynArr: Push an element onto the top of the stack.
+ * topDynArr: Returns the element at the top of the stack. 
+ * popDynArr: Removes the element on top of the stack.
  * 
+ * Implementation of Bag Interface ****************************************
+ * containsDynArr: Returns boolean (encoded as an int) demonstrating whether or not 
+ * 								 the specified value is in the collection.
+ * removeDynArr: 	Removes the first occurrence of the specified value from the collection 
+ * 								if it occurs.
  */
 
 /*	dynamicArray.c: Dynamic Array implementation. */
@@ -115,8 +124,9 @@ void deleteDynArr(DynArr *v)
 */
 void _dynArrSetCapacity(DynArr *v, int newCap)
 {	
-	TYPE *temp = malloc(sizeof(TYPE) * newCap) /* Create a new array to hold copied elements */
+	TYPE *temp = malloc(sizeof(TYPE) * newCap); /* Create a new array to hold copied elements */
 	assert(temp != 0);
+
 	/* Copy the original elements from data array in to temp one */
 	for(int i = 0; i < v -> size; i++) {
 		temp[i] = v -> data[i];
@@ -261,10 +271,12 @@ void removeAtDynArr(DynArr *v, int idx)
 */
 int isEmptyDynArr(DynArr *v)
 {
-	/* FIXME: You will write this function */
-	
-	/* FIXME:  You will change this return value*/
-	return 1;
+	/* Check the current size */
+	if(v -> size == 0) {
+		return 1;
+	} else {
+		return 0;
+	}
 }
 
 /* 	Push an element onto the top of the stack
@@ -278,7 +290,13 @@ int isEmptyDynArr(DynArr *v)
 */
 void pushDynArr(DynArr *v, TYPE val)
 {
-	/* FIXME: You will write this function */
+	/* Check if capacity is enough or need to double size */
+	if(v -> size >= v -> capacity) {
+		_dynArrSetCapacity(v, 2 * (v -> capacity));
+	}
+	/* inser the new element and update the size */
+	v -> data[v -> size] = val;
+	v -> size++;
 }
 
 /*	Returns the element at the top of the stack 
@@ -290,10 +308,7 @@ void pushDynArr(DynArr *v, TYPE val)
 */
 TYPE topDynArr(DynArr *v)
 {
-	/* FIXME: You will write this function */
-	
-	/* FIXME: You will change this return value*/
-	return 1;
+	return v -> data[(v -> size) - 1];
 }
 
 /* Removes the element on top of the stack 
@@ -306,7 +321,8 @@ TYPE topDynArr(DynArr *v)
 */
 void popDynArr(DynArr *v)
 {
-	/* FIXME: You will write this function */
+	v -> data[(v -> size) - 1] = 0;
+	v -> size--;
 }
 
 /* ************************************************************************
@@ -326,11 +342,13 @@ void popDynArr(DynArr *v)
 */
 int containsDynArr(DynArr *v, TYPE val)
 {
-	/* FIXME: You will write this function */
-	
-	/* FIXME:  You will change this return value */
-	return 1;
-
+	/* Traverse the whole array */
+	for(int i = 0; i < v -> size; i++) {
+		if(v -> data[i] == val) {
+			return 1;
+		}
+	}
+	return 0; /* If not found after traversing */
 }
 
 /*	Removes the first occurrence of the specified value from the collection
@@ -345,5 +363,18 @@ int containsDynArr(DynArr *v, TYPE val)
 */
 void removeDynArr(DynArr *v, TYPE val)
 {
-	/* FIXME: You will write this function */
+	if(containsDynArr(v, val) == 1) {
+		/* find the index of remove value */
+		int index = 0;
+		while(v -> data[index] != val) {
+			index++;
+		}
+		/* Move the element to the previous index */
+		for(int i = index; i < (v -> size) - 1; i++) {
+			v -> data[i] = v -> data[i + 1];
+		}
+
+		/* Update the current size */
+		v -> size--;
+	}
 }

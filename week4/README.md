@@ -157,12 +157,22 @@ void initBST(struct BinarySearchTree *tree) {
 }
 
 void addBST(struct BinarySearchTree *tree, TYPE newValue) {
- tree->root = _nodeAddBST(tree->root, newValue); tree->size++; 
+    tree->root = _nodeAddBST(tree->root, newValue); tree->size++; 
 }
 
 int sizeBST (struct BinarySearchTree *tree) {
    return tree->size; 
 }
+
+/************************************************************
+ * _nodeAddBST(struct Node *current, TYPE newValue)
+ * If the Tree is empty, directly add the new Node into root's left child.
+ * If the root value is smaller than new Value:
+ *   we must add this new Node in root's right child,
+ *   so, connect current -> right with another _nodeAddBST function recursivly.
+ * Oppositely,
+ *   connect current -> left with it's left child with another _nodeAddBST function recursivly.
+ ************************************************************/
 
 struct Node * _nodeAddBST (struct Node *current, TYPE newValue) {
   struct Node *currentNode;
@@ -191,6 +201,12 @@ struct Node * _nodeAddBST (struct Node *current, TYPE newValue) {
 }
 
 
+/************************************************************
+ * containsBST(struct Node *current, TYPE d)
+ * Binary-Search like searching method.
+ * Go through the different direction depends on the value.
+ ************************************************************/
+
 int containsBST (struct BinarySearchTree *tree, TYPE d) {
   struct Node *cur = tree -> root;
 
@@ -209,6 +225,11 @@ int containsBST (struct BinarySearchTree *tree, TYPE d) {
   return 0;
 }
 
+/************************************************************
+ * _leftMostChild(struct Node *current)
+ * Find the left most child by keeping searching the left side child until meet 0.
+ ************************************************************/
+
 TYPE _leftMostChild (struct Node * current) {
   /* Keep searching the current left child */
   while(current -> left != 0) {
@@ -216,6 +237,15 @@ TYPE _leftMostChild (struct Node * current) {
   }
   return current -> value;
 }
+
+/************************************************************
+ * _remvoeLeftmostChild(struct Node *current)
+ * Need to find the left most child by using "_leftMostChuld" function.
+ * There will be two situations:
+ *  1. Current node has already been the leftMost one which means without left child.
+        -> Remove itself and move the current root left.
+ *  2. There is a left child, and we used left child as arugement to remvoe it's left most child.
+ ************************************************************/
 
 struct node * _removeLeftmostChild (struct Node *current) {
   struct Node *temp;
@@ -230,6 +260,17 @@ struct node * _removeLeftmostChild (struct Node *current) {
   current -> left = _removeLeftmostChild(current -> left);
   reutnr current;
 }
+
+/************************************************************
+ * _nodeRemoveBST(struct Node *current, TYPE d)
+ * We need to find the target first. (By recusively calling the _NodeRemoveBST)
+ * When we found the target node:
+ * 1. Find if there is a left Most Node in it's right child
+ * 2. If there is no right child, remove the target and return it's left child.
+ * 3. If there is a right child of this target node, get it's right child's left
+ *    Most node value, assign that value to the removed node and revmoe that 
+ *    left most child by calling (_removeLeftmostChild(current -> right)).
+ ************************************************************/
 
 struct Node * _nodeRemoveBST (struct Node * current, TYPE d) {
   struct Node *node;
@@ -263,9 +304,6 @@ void removeBST (struct BinarySearchTree *tree, TYPE d) {
  tree->size--;
  }
 }
-
-
-
 ```
 
 ***

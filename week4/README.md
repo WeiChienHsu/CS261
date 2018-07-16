@@ -192,7 +192,69 @@ struct Node * _nodeAddBST (struct Node *current, TYPE newValue) {
 
 
 int containsBST (struct BinarySearchTree *tree, TYPE d) {
+  struct Node *cur = tree -> root;
 
+  while(cur != 0) {
+    if(cur -> value == d) {
+      return 1;
+    } else if(cur -> value > d) {
+      /* Current value is too large, search left child */
+      cur = cur -> left;
+    } else {
+      /* Current value is too small, search right child */
+      cur = cur -> right;
+    }
+  }
+
+  return 0;
+}
+
+TYPE _leftMostChild (struct Node * current) {
+  /* Keep searching the current left child */
+  while(current -> left != 0) {
+    current = current -> left;
+  }
+  return current -> value;
+}
+
+struct node * _removeLeftmostChild (struct Node *current) {
+  struct Node *temp;
+  if(current -> left == 0) {
+    /* If current has already been the leftMost (No left child) */
+    /* Revmoe itself */
+    temp = current -> right;
+    free(current);
+    return temp;
+  } 
+  /* If current node has a left child, go left and find it's left most */
+  current -> left = _removeLeftmostChild(current -> left);
+  reutnr current;
+}
+
+struct Node * _nodeRemoveBST (struct Node * current, TYPE d) {
+  struct Node *node;
+  if(current -> val == d) {
+    /* Find the leftMost in right Tree and replace the Value */
+    if(current -> right == 0) {
+      /* If there is no right tree */
+      node = current -> left;
+      free(current);
+      return node;
+    }
+
+    /* Get the Value of LeftMost node in right child and assign the the removed node */
+    current -> val = _leftMostChild(current -> right);
+    /* Get rid of the right LeftMost Node */
+    current -> right = _removeLeftmostChild(current -> right);
+  }
+  else if (current -> val > d) {
+    current -> left = _nodeRemoveBST(current -> left, d);
+  }
+  else {
+    current -> right = _nodeRemoveBST(current -> right, d);
+  }
+
+  return current;
 }
 
 void removeBST (struct BinarySearchTree *tree, TYPE d) {
@@ -203,17 +265,6 @@ void removeBST (struct BinarySearchTree *tree, TYPE d) {
 }
 
 
-TYPE _leftMostChild (struct Node * current) {
-
-}
-
-struct node * _removeLeftmostChild (struct Node *current) {
-
-}
-
-struct Node * _nodeRemoveBST (struct Node * current, TYPE d) {
-
-}
 
 ```
 

@@ -1,8 +1,137 @@
-# Iterators
+## Array Iterators
 
+```c
+void dynArrayRemoveAt (struct dynArray * dy, int index);
+
+struct dynArrayIterator { 
+  struct dynArray * da; 
+  int currentIndex;
+};
+
+void dynArrayIteratorInit (struct dynArray *da, struct dynArrayIterator *itr) {
+  /* Initialize the iterator array */
+  itr -> da = da;
+  /* Assign index to iterator */
+  itr -> currentIndex = 0;
+}
+
+int dynArrayIteratorHasNext (struct dynArrayIterator *itr) {
+  if(itr -> currentIndex != itr -> da -> size) {
+    itr -> currentIndex++;
+    return 1;
+  }
+  return 0;
+}
+
+TYPE dynArrayIteratorNext (struct dynArrayIterator *itr) {
+  return itr -> da -> data[itr -> currentIndex];
+}
+
+void dynArrayIteratorRemove (struct dynArrayIterator *itr) {
+  dynArrayRemoveAt(itr -> da, itr -> currentIndex);
+  itr -> currentIndex--;
+}
+```
+
+## Linked List Iterator
+
+```c
+struct linkedListIterator { 
+  struct linkedList * lst; 
+  struct dLink * currentLink;
+}
+
+void linkedListIteratorInit (struct linkedList *lst, struct linkedListIterator * itr) { 
+  itr->lst = lst;
+  itr->currentLink = lst->frontSentinel;
+}
+
+void _removeLink (struct linkedList *lst, struct dLink * lnk); 
+
+int linkedListIteratorHasNext (struct linkedListIterator *itr) {
+  if(itr -> currentLink != itr -> lst -> backSentinel) {
+    return 1;
+  }
+  return 0;
+}
+
+TYPE linkedListIteratorNext (struct linkedListIterator *itr) {
+  TYPE temp = itr -> currentLink -> value;
+  itr -> currentLink = itr -> currentLink -> next;
+  return temp;
+}
+/* think about the next one carefully. Draw a picture. What should itr->currentLink be pointing to after the remove operation? */
+void linkedListIteratorRemove (struct linkedListIterator *itr) {
+  struct dLink *temp = itr ->currentLink;
+  itr -> currentLink = itr -> currentLink -> next;
+  _remove(itr -> lst, temp);
+}
+```
 
 ****
 # Sorted Arrays and Binary Search
+
+As we did with remove, we will divide this into two steps. The add method will find the correct location at which to insert a value, then call another method that will insert an element at a given location:
+
+```c
+int dyArrayBinarySearch (struct dyArray * da, TYPE testValue) { 
+  return _binarySearch (da->data, da->size, testValue); 
+}
+
+int bunarySearch(TYPE *data, int size, TYPE testValue) {
+  int start = 0;
+  int end = size - 1;
+
+  while(start < end) {
+    int mid = start + (end - start) / 2;
+    if(data[mid] == testValue) {
+      return mid;
+    } else if(data[mid] > testValue) {
+      end = mid;
+    } else {
+      start = mid;
+    }
+  }
+  return -1; /* Not found the element */
+}
+
+void orderedArrayAdd (struct dyArray *da, TYPE newElement) { 
+  int index = binarySearch(da->data, da->size, newElement); 
+  dyArrayAddAt (da, index, newElement);
+}
+
+int orderArrayContains(struct dyArray *da, TYPE testElement) {
+  if(bunarySearch(da, testElement) == -1) {
+    return 0;
+  } else {
+    return 1;
+  }
+}
+
+void orderedArrayRemove(struct dyArray *da, TYPE testElement) {
+  int index = bunarySearch(da, testElement);
+  assert(index != -1);
+
+  for(int i = index, i < da -> size - 1; i++) {
+    da -> data[i] = da -> data[i + 1];
+  }
+  da -> data[size - 1] = 0;
+}
+
+
+void dyArrayAddAt(struct dyArray *da, int index, TYPE newElement){
+  assert(index >= 0 && index <= da -> size);
+  if(da -> size >= da -> capacity) {
+    _dyArrayDoubleCapacity(da);
+  }
+  for(int i = da -> size; i > index; i--) {
+    da -> data[i] = da -> data[i - 1];
+  }
+  da -> data[index] = newElement;
+}
+
+
+```
 
 
 ***

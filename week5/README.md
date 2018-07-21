@@ -17,7 +17,9 @@ The Third technique, skew heap, used an interesting variation on the heap techni
 
 Included sorted dynamic array, the skip list, and the AVL tree. In each of these containers the smallest element is always the first value.
 
-## Building a Priority Queue using a Heap - O(log(n)) insertion
+***
+
+# Building a Priority Queue using a Heap - O(log(n)) insertion
 
 A heap is a binary tree that also maintains the property that the value stored at every node is less than or equal to the values stored at either of its child nodes. This is termed the heap order property. 
 
@@ -34,59 +36,66 @@ That is, the tree if full except for the bottom row, which is filled from left t
     /\   / \
    12 14 11 13   
 
-2 3 4 9 10 7 8 12 14 11 13
+2 3 5 9 10 7 8 12 14 11 13
 ```
 
 In particular, the smallest element is always at the root. Although we will continue to think of the heap as a tree, we will make use of the fact that a complete binary tree can be very efficiently represented as an array.
 
-To root of the tree will be stored as the first element in the array. The children of node i are found at positions 2i+1 and 2i+2, the parent at (i-1)/2. You should examine the tree above, and verify that the transformation given will always lead you to the children of any node. To reverse the process, to move from a node back to the parent, simply subtract 1 and divide by 2. You should also verify that this process works as you would expect.
+To root of the tree will be stored as the first element in the array. The children of node i are found at positions 2i+1 and 2i+2, the parent at (i-1)/2. You should examine the tree above, and verify that the transformation given will always lead you to the children of any node. To reverse the process, to move from a node back to the parent, simply subtract 1 and divide by 2.
 
-
-### Insertion in the Heap (to implement the Priority Queue)
+ 
+## Insertion in the Heap  -  Percolated up into position
 
 To insert a new value into a heap the value is first added to the end. Adding an element to the end preserves the complete binary tree property, but not the heap ordering. To fix the ordering, the new value is percolated up into position.
 
 It is compared to its parent node. If smaller, the node and the parent are exchanged. This continues until the root is reached, or the new value finds its correct position. Because this process follows a path in a complete binary tree, it is O(log n).
 
+
 - Insert 4
 
 ```
-            2
-         /     \
-        3        5
-      /  \      / \
-     9   10    7   8
-    /\   / \   /
+             2
+         /       \
+        3          5
+      /  \        / \
+     9   10      7   8
+    /\   / \    /
    12 14 11 13 4  
 
 Switch 4 and 7
 
 
-            2
-         /     \
-        3        5
-      /  \      / \
-     9   10    4   8
-    /\   / \   /
+             2
+         /       \
+        3          5
+      /  \        / \
+     9   10      4   8
+    /\   / \    /
    12 14 11 13 7  
 
 Switch 4 and 5
 
-            2
-         /     \
-        3        4
-      /  \      / \
-     9   10    5   8
-    /\   / \   /
+             2
+         /       \
+        3          4
+      /  \        / \
+     9   10      5   8
+    /\   / \    /
    12 14 11 13 7  
 
 ```
 
 ### Removal in the Heap (to implement the Priority Queue)
 
-When the root node is removed it leaves a “hole.” Filling this hole with the last element in the heap restores the complete binary tree property, but not the heap order property. To restore the heap order the new value must percolate down into position.
+When the root node is removed it leaves a “hole.” 
 
-To percolate down a node is compared to its children. If there are no children, the process halts. Otherwise, the value of the node is compared to the value of the smallest child. If the node is larger, it is swapped with the smallest child, and the process continues with the child. Again, the process is traversing a path from root to leaf in a complete binary tree. It is therefore O(log n).
+Filling this hole with the last element in the heap restores the complete binary tree property, but not the heap order property. To restore the heap order the new value must percolate down into position.
+
+To percolate down a node is compared to its children. If there are no children, the process halts. 
+
+Otherwise, the value of the node is compared to the value of the smallest child. 
+
+If the node is larger, it is swapped with the smallest child, and the process continues with the child. Again, the process is traversing a path from root to leaf in a complete binary tree. It is therefore O(log n).
 
 
 ```
@@ -148,3 +157,107 @@ This method uses a heap that may be traversed randomly depending on the characte
 ## Merge Sort. 
 
 This is used when several runs (pieces of the data) are already sorted. The locality of the method comes from the fact that each run is traversed sequentially, thus, locality is exploited reasonably. Also, the heap used to sort is R Log(R) size for R being the number of runs to be sorted, which keeps locality reasonably well if the heap fits in memory.
+
+***
+
+# Worksheet 33 : Implementaion of Heap and Priority Queue
+
+```c
+TYPE dyArrayGet(DyArray *heap, int index);
+void dyArrayPut(DyArray *heap, int index, int value);
+void dyArrayAdd(DyArray *heap, int newValue);
+void dyArrayRemoveAt(DyArray *heap, int index);
+int dyArraySize(DyArray *heap);
+
+
+/**************************************************************
+ * adjustHeap
+ * Adjust the minHeap by checking if input position is smaller 
+ * than its children.
+ * There are three situations of Child:
+ * 1. Have two children 
+ * 2. Only have one child
+ * 3. no Child
+ * If value of parent larger than its child, swap their value and 
+ * reheap the current child with its children recursively until 
+ * this Heap maintained balanced. 
+ **************************************************************/
+
+void adjustHeap(struct dyArray * heap, int max, int pos) {
+  int leftChild = 2 * pos + 1;
+  int rightChild = 2 * pos + 2;
+
+  /* Right Child < max -> Have two children */
+  if(rightChild < max) {
+    /* Get index of smallest child */
+    int smallerChild = indexSmallest(heap, leftChild, rightChild);
+    if(dyArrayGet(heap, pos) > dyArrayGet(heap, smallerChild)) {
+      swap(heap, pos, smallerChild);
+      adjustHeap(heap, max, smallerChild);
+    }
+  }
+  /* Only have one child */
+  else if(leftChild < max) {
+    if(dyArrayGet(heap, pos) > dyArrayGet(heap, leftChild)) {
+      swap(heap, pos, leftChild);
+      adjustHeap(heap, max, leftChild);
+    }
+  } 
+} 
+
+void swap(struct dyArray * arr, int i, int j) {
+  TYPE temp = dyArrayGet(arr, i);
+  dyArrayPut(arr, i, dyArrayGet(arr, j));
+  dyArrayPut(arr, j, temp);
+}
+
+int indexSmallest(struct dyArray* arr, int i, int j) {
+  /* return index of smallest element */
+  if(LT(dyArrayGet(arr, i), dyArrayGet(arr, j))){
+    return i;
+  }
+  return j;
+}
+
+/**************************************************************
+ *  heapAdd
+ *  Add a new value in the last element of exist array.
+ *  Comparing the value with its parents and reheap this element
+ *  to the correct position to maintain the balance of the Heap.
+ **************************************************************/
+
+void heapAdd(struct dyArray *heap, TYPE newValue) {
+  dyArrayAdd(heap, newValue); /* Add a new Node in the end */
+
+  /* Adjust the new node with its parent until the root maintained the min element */
+  int pos = dyArraySize(heap);
+  int parent;
+
+  while(pos != 0) {
+    parent = (pos - 1) / 2;
+    if(dyArrayGet(heap, pos) < dyArrayGet(heap, parent)) {
+      swap(heap, pos, parent);
+      pos = parent;
+    } else {
+      return;
+    }
+  }
+}
+
+void heapRemoveFirst(struct dyArray *heap) {
+  /* Replace the root value by the value of last element */
+  int last = dyArraySize(heap) - 1;
+  assert(dyArraySize(heap) > 0);
+
+  dyArrayPut(heap, 0, dyArrayGet(heap, last));
+  dyArrayRemoveAt(heap, last); /* Remove the last element */
+  adjustHeap(heap, last, 0);  /* Reheaping */
+}
+
+
+TYPE heapGetFirst(struct dyArray *heap) {
+  assert(dyArraySize(heap) > 0);
+  return dyArrayGet(heap, 0);
+}
+
+```

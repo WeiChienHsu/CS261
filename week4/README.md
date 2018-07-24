@@ -426,6 +426,9 @@ struct Node * _nodeRemoveBST (struct Node * current, TYPE d) {
 
   return current;
 }
+/* 
+ * removeBST
+*/
 
 void removeBST (struct BinarySearchTree *tree, TYPE d) {
  if (containsBST(tree, d) {
@@ -437,4 +440,172 @@ void removeBST (struct BinarySearchTree *tree, TYPE d) {
 
 ***
 
-# Chapter 10 Efficient Collections 
+# AVL Trees
+
+In the extreme, such as the tree shown on the right, the tree reduces to nothing more than a linked list, and the path from root to leaf is O(n).
+
+```
+1
+  \
+    3
+      \
+        4
+          \
+            5
+```
+
+To preserve fast performance we need to ensure that the tree remains well balanced. One way to do this is to notice that the search tree property has some flexibility. 
+
+### Left Rotation
+
+Three nodes that are unbalanced can be restored by a rotation, making the right child into the new root, with the previous root as the new left child. 
+
+```
+3
+  \
+    4
+      \
+        5
+
+=> Rotation -> root becomes left child -> root.right becomes root
+
+    4    
+  /   \
+ 3     5 
+```
+
+Any existing left child of the old right child becomes the new right child of the new left child. The resulting tree is still a binary search tree, and has better balance.
+
+### Double Rotation (Right child has left child)
+
+There is also a corresponding right rotation. There is one case where a simple rotation is not sufficient. Consider an unbalanced tree with a right
+child that itself has a left child. If we perform a rotation, the result is still unbalanced
+
+```
+3 
+  \
+    6
+  /
+4    
+    
+=> Rotation -> root becomes left child -> root.right becomes root
+
+    6
+  /
+3 
+  \ 
+    4
+```
+
+The solution is to first perform a rotation on the child, and then rotate the parent. This is termed a double rotation.
+
+```
+3 
+  \
+    6
+  /
+4    
+    
+
+=> Rotation
+
+3
+  \
+    4
+      \
+        6
+
+=> Rotation -> root becomes left child -> root.right becomes root
+
+    4 
+  /   \
+3       6
+```
+
+## Height of a Node
+
+In order to know when to perform a rotation, it is necessary to know the height of a node. We could calculate this amount, but that would slow the algorithm. 
+
+Instead, we modify the Node so that each node keeps a record of its own height.
+
+```c++
+struct AVLnode {
+ TYPE value;
+ struct AVLnode *left;
+ struct AVLnode *right;
+ int height;
+};
+```
+
+A function h(Node) will be useful to determine the height of a child node. Since leaf
+nodes have height zero, a value of -1 is returned for a null value. Using this, a function setHeight can be defined that will set the height value of a node, assuming that the height of the child nodes is known:
+
+```c
+int _h(struct AVLnode * current){
+  if (current == 0) return -1; 
+  return current->height;
+}
+
+void _setHeight (struct AVLnode * current) {
+ int lch = h(current->left);
+ int rch = h(current->right);
+
+ if (lch < rch) {
+   /* Right height is higher, count the right + 1 */
+   current->height = 1 + rch;
+ } else {
+   current->height = 1 + lch;
+ }
+}
+```
+
+### Add a new node in the AVL tree and ReBalace it
+
+```c
+struct AVLnode * _AVLnodeAdd (struct AVLnode* current, TYPE newValue) {
+ struct AVLnode * newnode;
+ if (current == 0) {
+    newnode = (struct AVLnode *) malloc(sizeof(struct AVLnode));
+    assert(newnode != 0);
+    newnode->value = newValue;
+    newnode->left = newnode->right = 0;
+    return newnode;
+ } else if (LT(newValue, current->value)) {
+    current->left = AVLnodeAdd(current->left, newValue);
+ } else {
+    current->right = AVLnodeAdd(current->right, newValue);
+ }
+  return balance(current); /* <- NEW the call on balance */
+}
+```
+
+### Balance Factor
+
+The function balance performs the rotations necessary to restore the balance in the tree. Let the balance factor be the difference in height between the right and left child trees. 
+
+This is easily computed using a function. If the balance factor is more than 2, that is, if one subtree is more than two levels different in height from the other, then a rebalancing is performed. A check must be performed for double rotations, but again this is easy to determine using the balance factor function. Once the tree has been rebalanced the height is set by calling setHeight:
+
+```c
+int _bf (struct AVLnode * current){ 
+  return h(current->right) - h(current->left); 
+}
+
+struct AVLnode * _balance (struct AVLnode * current) {
+ int cbf = bf(current);
+ 
+ if (cbf < -1) {
+    if (bf(current->left) > 0) // double rotation
+      current->left = rotateLeft(current->left);
+    return rotateRight(current); // single rotation
+
+ } else if (cbf > 1) {
+    if (bf(current->right) < 0)
+      current->right = rotateRight(current->right);
+    return rotateLeft(current);
+ }
+
+ /* Current Balance factor == -1 0 1, no need to rotation */   
+  setHeight(current); /* Update the height */
+  return current;
+ }
+```

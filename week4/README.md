@@ -564,6 +564,7 @@ void _setHeight (struct AVLnode * current) {
 ```c
 struct AVLnode * _AVLnodeAdd (struct AVLnode* current, TYPE newValue) {
  struct AVLnode * newnode;
+ /* Find a correct place to insert */
  if (current == 0) {
     newnode = (struct AVLnode *) malloc(sizeof(struct AVLnode));
     assert(newnode != 0);
@@ -587,6 +588,7 @@ This is easily computed using a function. If the balance factor is more than 2, 
 
 ```c
 int _bf (struct AVLnode * current){ 
+  /* count the different of height between two children */
   return h(current->right) - h(current->left); 
 }
 
@@ -608,4 +610,20 @@ struct AVLnode * _balance (struct AVLnode * current) {
   setHeight(current); /* Update the height */
   return current;
  }
+```
+
+### Rotation
+
+```c
+struct AVLnode *_rotateLeft(struct AVLnode * current) {
+
+}
+```
+
+
+```c
+struct AVLnode *_rotateRight(struct AVLnode * current) {
+
+}
+
 ```

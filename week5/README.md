@@ -184,25 +184,30 @@ int dyArraySize(DyArray *heap);
  **************************************************************/
 
 void adjustHeap(struct dyArray * heap, int max, int pos) {
+  /* Represent a heap by a dynamic Array */
   int leftChild = 2 * pos + 1;
   int rightChild = 2 * pos + 2;
 
-  /* Right Child < max -> Have two children */
+  /* Have two children */
   if(rightChild < max) {
-    /* Get index of smallest child */
+    /* Get the index of smallest child */
     int smallerChild = indexSmallest(heap, leftChild, rightChild);
+    /* Compare the value between current root and its child */
     if(dyArrayGet(heap, pos) > dyArrayGet(heap, smallerChild)) {
       swap(heap, pos, smallerChild);
+      /* Deal with the child which was swap with its parent */
       adjustHeap(heap, max, smallerChild);
     }
   }
-  /* Only have one child */
+  /* Only have left child */
   else if(leftChild < max) {
+    /* Compare the value between current root and its left child */
     if(dyArrayGet(heap, pos) > dyArrayGet(heap, leftChild)) {
       swap(heap, pos, leftChild);
       adjustHeap(heap, max, leftChild);
     }
-  } 
+  }
+  /* Do not need to deal with no child situation */ 
 } 
 
 void swap(struct dyArray * arr, int i, int j) {

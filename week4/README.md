@@ -614,16 +614,111 @@ struct AVLnode * _balance (struct AVLnode * current) {
 
 ### Rotation
 
+New Root should be current node's right child and the current right point to new Root's left child.
+new Root's left child point to the current Node and update the height for both current node and new Root.
+
+```
+  3
+    \
+      5
+     /  \
+    4    6
+
+    5
+  /   \
+ 3     6
+  \
+   4 
+
+```
+
 ```c
 struct AVLnode *_rotateLeft(struct AVLnode * current) {
-
+   struct AVLnode * newRoot = current -> right;
+   current -> right = newRoot -> left;
+   newtop -> left = current;
+   setHeight(current);
+   setHeight(newRoot);
+   return newRoot;
 }
 ```
 
 
 ```c
 struct AVLnode *_rotateRight(struct AVLnode * current) {
-
+   struct AVLnode * newRoot = current->left;
+   current -> left = newRoot -> right;
+   newRoot -> right = current;
+   setHeight(current);
+   setHeight(newRoot);
+   return newRoot;
 }
 
+```
+
+## Removal
+
+Finally, let’s write the remove function for the AVL Tree. It is very similar to the remove() for a BST, however, you must be sure to balance when appropriate. We’ve provide the remove function, you must finish the implementation of the removeHelper. 
+
+```c
+void removeAVLTree(struct AVLTree *tree, TYPE val) {
+ if (containsAVLTree(tree, val)) {
+    tree->root = _removeNode(tree->root, val);
+    tree->cnt--;
+ }
+}
+
+```
+
+```c
+TYPE _leftMost(struct AVLNode *cur) {
+ while(cur->left != 0) {
+ cur = cur->left;
+ }
+ return cur->val;
+}
+```
+
+```c
+struct AVLNode *_removeLeftmost(struct AVLNode *cur) {
+  struct AVLNode *temp;
+    if(cur->left != 0) {
+      cur->left = _removeLeftmost(cur->left);
+      return _balance(cur);
+    }
+  /* There is no left child */
+  temp = cur->rght;
+  free(cur);
+  return temp;
+}
+```
+
+```c
+struct AVLNode *_removeNode(struct AVLNode *cur, TYPE val) {
+  struct AVLNode *temp;
+  if(EQ(val, cur->val)) {
+    if(cur->rght != 0) {
+      /* If there is a right child */
+      /* Find the value of leftMost node to replace the current value 
+      and remove the left Most node in right child */
+      cur->val =  _leftMost(cur->rght);
+      cur->rght =_removeLeftmost(cur->rght);
+      return _balance(cur);
+    } else {
+      /* If there is not right child, return current left and remove current node */
+        temp = cur->left;
+        free(cur);
+        return temp;
+    } 
+  } 
+  /* Haven't found the value */
+  else if(LT(val, cur->val)){
+    cur->left  = _removeNode(cur->left, val);
+  }
+  else {
+     cur->rght = _removeNode(cur->rght, val);
+  }
+
+  return _balance(cur);   
+}
 ```

@@ -1,40 +1,3 @@
-# Review Midterm
-
-- [Worksheet 0 ADT Array](#worksheet-0-adt-array)
-
-# Worksheet 0 ADT Array
-
-- Remove 的時候，記得更新 struct arrayBagStack 內的 count.
-- 記得 ADT 的 Functions 是怎麼寫的，要傳入 struct arrayBagStack的 pointer
-
-```h
-# ifndef ArrayBagStack
-# define ArrayBagStack
-# define MAX_SIZE 100
-
-# define TYPE int
-# define EQ(a, b) (a == b)
-
-struct arrayBagStack {
-  TYPE data [MAX_SIZE];
-  int count;
-};
-
-/* Interface for Bag */
-void initBag (struct arrayBagStack * b);
-void addBag (struct arrayBagStack * b, TYPE v);
-int containsBag (struct arrayBagStack * b, TYPE v);
-void removeBag (struct arrayBagStack * b, TYPE v);
-int sizeBag (struct arrayBagStack * b);
-/* Interface for Stack */
-void pushStack (struct arrayBagStack * b, TYPE v);
-int topStack (struct arrayBagStack * b);
-void popStack (struct arrayBagStack * b);
-int isEmptyStack (struct arrayBagStack * b);
-# endif
-```
-
-```c
 # include "ArrayBagStack.h"
 # include <stdio.h>
 
@@ -116,4 +79,3 @@ int main() {
   isEmptyStack(stack);
   return 0;
 }
-```

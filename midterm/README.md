@@ -2,6 +2,8 @@
 
 - [Worksheet 0 ADT Array](#worksheet-0-adt-array)
 - [Worksheet 14 Dynamic Array](#worksheet-14-dynamic-array)
+- [Worksheet 17 Linked List Stack](#worksheet-17-linked-list-stack)
+- [Worksheet 18 Linked List Queue](#worksheet-18-linked-list-queue)
 
 # Worksheet 0 ADT Array
 
@@ -383,7 +385,70 @@ void LinkedListStackPrint(struct LinkedListStack *s) {
 ```
 
 # Worksheet 18 Linked List Queue
+- FirstLink 和 LastLink 初始化時，都指向 lnk 一個沒有自帶value的 Link
+- AddBack: 改變 LastLink 的 next，並改變 LastLink 指向的 Link
+- PopFirst: 改變 FirstLink 指向的點，記得判斷是否直接指向空，要改變 LastLink，free temp pointer
 
+```c
+#include <assert.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+struct Link {
+  int value;
+  struct Link *next;
+};
+
+struct LinkedListQueue {
+  struct Link *firstLink;
+  struct Link *lastLink;
+};
+
+void LinkedListQueueInit(struct LinkedListQueue *q) {
+  struct Link *lnk = malloc(sizeof(struct Link));
+  assert(lnk != 0);
+  lnk -> next = 0;
+  q -> firstLink = lnk;
+  q -> lastLink = lnk;
+}
+
+int LinkedListQueueIsEmpty(struct LinkedListQueue *q) {
+  if(q -> firstLink == q -> lastLink) {
+    return 1;
+  }
+  return 0;
+}
+
+void LinkedListQueueAddBack(struct LinkedListQueue *q, int v) {
+  /* Create New List */
+  struct Link *newLink = malloc(sizeof(struct Link));
+  newLink -> next = 0;
+  newLink -> value = v;
+  q -> lastLink -> next = newLink;
+  q -> lastLink = newLink;
+}
+
+void LinkedListQueuePopFirst(struct LinkedListQueue *q) {
+  struct Link *temp = q -> firstLink -> next;
+  q -> firstLink -> next = temp -> next;
+  if(q -> firstLink -> next == 0) {
+    q -> lastLink = q -> firstLink;
+  }
+  free(temp);
+}
+
+int LinkedListQueueFront(struct LinkedListQueue *q) {
+  assert(!LinkedListQueueIsEmpty(q));
+  return q -> firstLink -> next -> value;
+}
+
+void LinkedListQueuePrint(struct LinkedListQueue *q) {
+  while(!LinkedListQueueIsEmpty(q)) {
+    printf("%d \n", LinkedListQueueFront(q));
+    LinkedListQueuePopFirst(q);
+  }
+}
+```
 
 # Worksheet 19 Linked List Deque
 

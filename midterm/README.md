@@ -4,6 +4,7 @@
 - [Worksheet 14 Dynamic Array](#worksheet-14-dynamic-array)
 - [Worksheet 17 Linked List Stack](#worksheet-17-linked-list-stack)
 - [Worksheet 18 Linked List Queue](#worksheet-18-linked-list-queue)
+- [Worksheet 20 Dynaic Array Deque and Queue](#worksheet-20-dynaic-array-deque-and-queue)
 
 # Worksheet 0 ADT Array
 
@@ -654,3 +655,8 @@ void linkedListRemove(struct LinkedList* list, TYPE value) {
 ```
 
 # Worksheet 20 Dynaic Array Deque and Queue
+- AddFront begin往前移動 ->begin index = d -> begin - 1 < 0 ? d -> capacity - 1 : d -> begin - 1;
+- AddBack -> end index = (d -> begin + d -> size) % d -> capacity
+- RemoveFront begin往後移動 -> begin index = d -> begin + 1 >= d -> capacity ? 0 : d -> begin + 1;
+- RemoveBack -> end index = (d -> begin + d -> size - 1) % d -> capacity
+

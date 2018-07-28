@@ -318,3 +318,74 @@ void removeDynArr(DynArr *v, TYPE val) {
 }
 
 ```
+
+# Worksheet 17 Linked List Stack
+- struct Link *newLink =(struct Link*) malloc(sizeof(struct Link));
+- firstLink 本身的 Default Value 是 NULL，return firstLink -> value 就是 HEAD，不額外使用firstLink當作一個DummyNode，把它當作指針。
+- 注意 Stack pop 和 push 的實踐。
+
+```c
+#include <assert.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+struct Link {
+  int value;
+  struct Link *next;
+};
+
+struct LinkedListStack {
+  struct Link *firstLink;
+};
+
+void LinkedListStackInit(struct LinkedListStack *s) {
+  s -> firstLink = NULL;
+}
+
+int LinkedListStackIsEmpty(struct LinkedListStack *s) {
+  if(s -> firstLink  == NULL) {
+    return 1;
+  }
+  return 0;
+}
+
+void LinkedListStackPop(struct LinkedListStack *s) {
+  assert(s -> firstLink != NULL);
+  struct Link *temp = s -> firstLink;
+  s -> firstLink  = s -> firstLink -> next;
+  temp -> next = NULL;
+  free(temp);
+}
+
+void LinkedListStackFree(struct LinkedListStack *s) {
+  while(!LinkedListStackIsEmpty(s)) {
+    LinkedListStackPop(s);
+  }
+}
+
+void LinkedListStackPush(struct LinkedListStack *s, int v) {
+  struct Link *newLink =(struct Link*) malloc(sizeof(struct Link));
+  newLink -> value = v;
+  newLink -> next = s -> firstLink;
+  s -> firstLink  = newLink;
+}
+
+int LinkedListStackTop(struct LinkedListStack *s) {
+  return s -> firstLink  -> value;
+}
+
+void LinkedListStackPrint(struct LinkedListStack *s) {
+  while(!LinkedListStackIsEmpty(s)) {
+    printf("%d \n", LinkedListStackTop(s));
+    LinkedListStackPop(s);
+  }
+}
+```
+
+# Worksheet 18 Linked List Queue
+
+
+# Worksheet 19 Linked List Deque
+
+
+# Worksheet 20 Dynaic Array Deque and Queue

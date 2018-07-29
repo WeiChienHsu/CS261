@@ -146,13 +146,13 @@ void linkedListRemove(struct LinkedList* list, TYPE value) {
 }
 
 
-int main() {
-  struct LinkedList *list = linkedListCreate();
-  linkedListAddBack(list, 10);
-  linkedListAddFront(list,20);
-  linkedListAddBack(list, 40);
-  linkedListAddFront(list, 10);
-  printf(" %d \n", linkedListFront(list));
-  linkedListPrint(list);
-  return 0;
-}
+// int main() {
+//   struct LinkedList *list = linkedListCreate();
+//   linkedListAddBack(list, 10);
+//   linkedListAddFront(list,20);
+//   linkedListAddBack(list, 40);
+//   linkedListAddFront(list, 10);
+//   printf(" %d \n", linkedListFront(list));
+//   linkedListPrint(list);
+//   return 0;
+// }

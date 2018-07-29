@@ -847,3 +847,199 @@ int main() {
 
 # Worksheet 24 LinkedList Iterator
 
+```c
+#include "LinkedList.h"
+#include <assert.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+// Double link
+struct Link
+{
+	TYPE value;
+	struct Link* next;
+	struct Link* prev;
+};
+
+// Double linked list with front and back sentinels
+struct LinkedList
+{
+	int size;
+	struct Link* frontSentinel;
+	struct Link* backSentinel;
+};
+
+struct linkedListIterator{
+  struct LinkedList *lst;
+  struct Link *currentLink; 
+};
+
+void linkedListIteratorInit(struct LinkedList *lst ,struct linkedListIterator *itr) {
+  itr -> lst  = lst;
+  itr -> currentLink = lst -> frontSentinel;
+}
+
+int linkedListIteratorHasNext(struct linkedListIterator* itr) {
+  if(itr -> currentLink -> next == itr -> lst ->backSentinel) {
+    return 0;
+  } else {
+    itr -> currentLink = itr -> currentLink -> next;
+    return 1;
+  }
+}
+
+int linkedListIteratorNext(struct linkedListIterator *itr) {
+  return itr -> currentLink -> value;
+}
+
+void _removeLink (struct LinkedList *list, struct Link * link) {
+  assert(list != 0);
+
+  link -> prev -> next = link -> next;
+  link -> next -> prev = link -> prev;
+
+  link -> prev = NULL;
+  link -> next = NULL;
+  link -> value = 0;
+  free(link);
+
+  list -> size -- ;
+}
+
+void linkedListIteratorRemove(struct linkedListIterator *itr) {
+  struct Link *temp = itr -> currentLink;
+  itr -> currentLink = itr -> currentLink -> prev;
+  _removeLink(itr -> lst, temp);
+}
+
+
+int main() {
+  struct LinkedList *list = linkedListCreate();
+  linkedListAddBack(list, 10);
+  linkedListAddFront(list,20);
+  linkedListAddBack(list, 40);
+  linkedListAddFront(list, 10);
+  linkedListAddBack(list, 10);
+  linkedListAddFront(list,20);
+  linkedListAddBack(list, 40);
+  linkedListAddFront(list, 10);
+  struct linkedListIterator* itr = malloc(sizeof(struct linkedListIterator));
+  linkedListIteratorInit(list, itr);
+  while(linkedListIteratorHasNext(itr)) {
+    printf("%d \n", linkedListIteratorNext(itr));
+    linkedListIteratorRemove(itr);
+  }
+  printf("%d \n", linkedListIsEmpty(list));
+  return 0;
+}
+```
+
+***
+
+# Worksheet 26 Ordered Bad using a Sorted Array
+- 注意 Binary Search 的設定。
+```c
+int _binarySearch(TYPE *data, int size, TYPE testValue) {
+  int low = 0;
+  int high = size;
+  int mid;
+  while(low < high) {
+    mid = low + (high - low) / 2;
+    if(data[mid] < testValue) {
+      low = mid + 1;
+    } else {
+      high = mid;
+    }
+  }
+  return low;
+}
+```
+
+```c
+#include <assert.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include "DynArr.h"
+
+struct DynArr
+{
+	TYPE *data;		/* pointer to the data array */
+	int size;		/* Number of elements in the array */
+	int capacity;	/* capacity ofthe array */
+};
+
+int _binarySearch(TYPE *data, int size, TYPE testValue) {
+  int low = 0;
+  int high = size;
+  int mid;
+  while(low < high) {
+    mid = low + (high - low) / 2;
+    if(data[mid] < testValue) {
+      low = mid + 1;
+    } else {
+      high = mid;
+    }
+  }
+  return low;
+}
+
+int dyArrayBinarySearch(struct DynArr *da, TYPE testValue) {
+  return _binarySearch(da -> data, da -> size, testValue);
+}
+
+void orderedArrayAddAt(struct DynArr *da, TYPE newElement) {
+  int index = _binarySearch(da -> data, da -> size, newElement);
+  putDynArr(da, index, newElement);
+}
+
+int orderedArrayContains(struct DynArr *da, TYPE testElement) {
+  int index = _binarySearch(da -> data, da -> size, testElement);
+  if(index < da -> size && (testElement == da -> data[index])) {
+    return 1;
+  }
+  return 0;
+}
+
+void orderedArrayRemove(struct DynArr *da, TYPE testElement) {
+  int index = _binarySearch(da -> data, da -> size, testElement);
+  if(index < da -> size && (testElement == da -> data[index])) {
+    removeAtDynArr(da, index);
+  }
+}
+
+void orderedArrayPrint(struct DynArr *da) {
+  for(int i = 0; i < da -> size; i++) {
+    printf(" %d \n", getDynArr(da, i));
+  }
+  printf(" \n");
+}
+
+int main() {
+  struct DynArr *arr = newDynArr(10);
+  addDynArr(arr, 10);
+  addDynArr(arr, 20);
+  addDynArr(arr, 30);
+  addDynArr(arr, 40);
+  addDynArr(arr, 50);
+  addDynArr(arr, 60);
+  orderedArrayPrint(arr);
+  orderedArrayAddAt(arr,25);
+  orderedArrayAddAt(arr,32);
+  orderedArrayRemove(arr,20);
+  orderedArrayRemove(arr,40);
+  orderedArrayRemove(arr,10);
+  orderedArrayPrint(arr);
+
+  return 0;
+}
+```
+
+***
+
+# Worksheet 28 Binary Search Tree
+
+***
+
+# Worksheet 29 
+
+

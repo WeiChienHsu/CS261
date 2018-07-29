@@ -7,6 +7,8 @@
 - [Worksheet 20 Dynaic Array Deque and Queue](#worksheet-20-dynaic-array-deque-and-queue)
 - [Worksheet 23 Iterator](#worksheet-23-iterator)
 - [Worksheet 24 LinkedList Iterator](#worksheet-24-linkedlist-iterator)
+- [Worksheet 26 Ordered Bad using a Sorted Array](#worksheet-26-ordered-bag-using-a-Sorted-Array)
+- [Worksheet 29 Binary Search Tree](#worksheet-29-binary-search-tree)
 
 # Worksheet 0 ADT Array
 
@@ -936,7 +938,7 @@ int main() {
 
 ***
 
-# Worksheet 26 Ordered Bad using a Sorted Array
+# Worksheet 26 Ordered Bag using a Sorted Array
 - 注意 Binary Search 的設定。
 ```c
 int _binarySearch(TYPE *data, int size, TYPE testValue) {
@@ -1036,10 +1038,13 @@ int main() {
 
 ***
 
-# Worksheet 28 Binary Search Tree
+
 
 ***
 
-# Worksheet 29 
+# Worksheet 29 Binary Search Tree
+- 記得不要直接移動 tree -> root，用一個 struct Node * cur = tree -> root 的指針代替。
+
+
 
 

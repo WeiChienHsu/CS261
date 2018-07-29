@@ -55,21 +55,54 @@ void dequeAddFront(struct deque *d, int value) {
 
 
 void dequeAddBack(struct deque *d, int value) {
-
-}
-
-void dequeRemoveFront(struct deque *q) {
-
-}
-
-void dequeRemoveBack(struct deque *q) {
-
-}
-
-int dequeFront(struct deque *q) {
-
-}
-
-int dequeBack(struct deque *q) {
+  if(d -> size >= d -> capacity) {
+    _dequeSetCapacity(d, 2 * d -> capacity);
+  }
   
+  int index = (d -> begin + d -> size) % d -> capacity;
+  d -> size ++;
+  d -> data[index] = value;
+}
+
+void dequeRemoveFront(struct deque *d) {
+  if(d -> begin + 1 >= d -> capacity) {
+    d -> begin = 0;
+  } else {
+    d -> begin++;
+  }
+  d -> size--;
+}
+
+void dequeRemoveBack(struct deque *d) {
+  d -> size --;
+}
+
+int dequeFront(struct deque *d) {
+  return d -> data[d -> begin];
+}
+
+int dequeBack(struct deque *d) {
+  return d -> data[d -> begin + d -> size - 1];
+}
+
+void dequePrint(struct deque *d) {
+  while(d -> size != 0) {
+    printf("%d \n", dequeFront(d));
+    dequeRemoveFront(d);
+  }
+}
+
+
+int main() {
+  struct deque * d;
+  dequeInit(d, 10);
+  dequeAddFront(d, 20);
+  dequeAddBack(d, 30);
+  dequeRemoveBack(d);
+  dequeAddBack(d,10);
+  dequeAddBack(d,50);
+  dequeAddFront(d,100);
+  dequeRemoveBack(d);
+  dequePrint(d);
+  return 0;
 }

@@ -660,3 +660,23 @@ void linkedListRemove(struct LinkedList* list, TYPE value) {
 - RemoveFront begin往後移動 -> begin index = d -> begin + 1 >= d -> capacity ? 0 : d -> begin + 1;
 - RemoveBack -> end index = (d -> begin + d -> size - 1) % d -> capacity
 
+- 擴增 Dynamic Array 的時候，重新佈置 begin == 0，elements copy 到新 Array 內。
+
+```c
+void _dequeSetCapacity(struct deque *d, int newCapacity) {
+  int *newDeque = (int *) malloc(sizeof(int) * newCapacity);
+  int j = d -> begin;
+  for(int i = 0; i < d -> size; i++) {
+    newDeque[i] = d -> data[j];
+    j++;
+    if(j >= d -> capacity) {
+      j = 0;
+    }
+  }
+
+  free(d -> data);
+  d -> data = newDeque;
+  d -> begin = 0;
+  d -> capacity = newCapacity;
+}
+```

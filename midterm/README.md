@@ -5,6 +5,8 @@
 - [Worksheet 17 Linked List Stack](#worksheet-17-linked-list-stack)
 - [Worksheet 18 Linked List Queue](#worksheet-18-linked-list-queue)
 - [Worksheet 20 Dynaic Array Deque and Queue](#worksheet-20-dynaic-array-deque-and-queue)
+- [Worksheet 23 Iterator](#worksheet-23-iterator)
+- [Worksheet 24 LinkedList Iterator](#worksheet-24-linkedlist-iterator)
 
 # Worksheet 0 ADT Array
 
@@ -776,3 +778,13 @@ void dequePrint(struct deque *d) {
   }
 }
 ```
+
+# Worksheet 23 Iterator
+- The first initializes the iterator, associating it with the container it will iterate over. 
+- The function hasNext returns true if there are more elements, false otherwise. 
+- The function next returns the current element.
+- The function remove can be used to remove the element last returned by next.
+
+
+
+# Worksheet 24 LinkedList Iterator

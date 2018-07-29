@@ -140,6 +140,6 @@ void removeDynArr(DynArr *v, TYPE val) {
   removeAtDynArr(v, getDynArr(v, val));
 }
 
-int main() {
-  return 0;
-}
+// int main() {
+//   return 0;
+// }

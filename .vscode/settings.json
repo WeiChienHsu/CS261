@@ -2,6 +2,9 @@
   "C_Cpp.errorSquiggles": "Disabled",
   "files.associations": {
     "limits": "c",
-    "type_traits": "c"
+    "type_traits": "c",
+    "stdlib.h": "c",
+    "linkedlist.h": "c",
+    "assert.h": "c"
   }
 }

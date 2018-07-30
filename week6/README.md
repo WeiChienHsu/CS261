@@ -1,23 +1,84 @@
 # Hash Map (Dictionary)
 
-Index values are a form of key; however, they are restricted to being integers and must be drawn from a limited range: usually zero to one less than the number of elements. Because of this restriction the elements in an array can be stored in a contiguous block; and the index can be used as part of the array offset calculation. In an array, the index need not be stored explicitly in the container. In a dictionary, on the other hand, a key can be any type of object. For this reason, the container must maintain both the key and its associated value.
+a very specific type of search. Elements are placed into the dictionary in key/value pairs.
 
-# Hashing
+To do a retrieval, the user supplies a key, and the container returns the associated value. Each key identifies one entry; that is, each key is unique.
 
-We have seen how containers such as the skip list and the AVL tree can reduce the time to perform operations from O(n) to O(log n).
+- get(key)
+- put(key, value)
+- containsKey(key)
+- removeKey(key)
+- keys()
+- size
 
+***
 
-So in O(1) time Amy can change a name into an integer index value, then use this value to index into a table. This is faster than an ordered data structure, indeed almost as fast as a subscript calculation. What Amy has discovered is called a perfect hash function. Hash functions are only required to return a value that is integer, not necessarily positive. So it is common to surround the calculation with abs( ) to ensure a positive value.
+# Hashing Function
+
+Almost any process that converts a value into an integer can be used as a hash function. 
+
+So in O(1) time Amy can change a name into an integer index value, then use this value to index into a table. This is faster than an ordered data structure. 
+
+What Amy has discovered is called a "perfect hash function".
+(No collisions in whole cases which means the character chose to be the key is unique) 
+Hash functions are only required to return a value that is integer, not necessarily positive. So it is common to surround the calculation with abs( ) to ensure a positive value.
+
+## Computing a Hash Table index 
+1. Transform the value (or key) to an integer (using the hash function)
+2. Map that integer to a valid hash table index (using the mod operator)
+
+- FAST (Constant time)
+- Produce UNIOFRMLY distributed indices
+- REPEATABLE
 
 
 ## Open Address Hashing(Probing) - Deal with collisions
 
-If Anne now joins the club, we will find that the hash value (namely, 5) is the same as for Alfred. So to find a location to store the value Anne we probe for the next free location. This means to simply move forward, position by position, until an empty location is found. In this example the next free location is at position 6.
+1. Construct a Bag.
+2. Use the Bag as the source for a Dictionary.
+3. When open-address hashing is used all elements are stored in a single large table.
+4. Positions that are not yet filled are given a null value. 
 
-For open address hashing the load factor is never larger than 1. Just as a dynamic array was doubled in size when necessary, a common solution to a full hash table is to move all values into a new and larger table when the load factor becomes larger than some threshold, such as 0.75. To do so a new table is created, and every entry in the old table is rehashed, this time dividing by the new table size to find the index to place into the new table.
+| 0 - aiqy | 1 - bjrz | 2 - cks | 3 - dlt | 4 - emu | 5 - fnv | 6 - gow | 7 - hpx |
+|:--------:|:--------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|
+| amIna    |          |         | anDy    | alEssia | alFred  |         | asPen   |
 
 
- Think about searching the table above for the value Alan, for example. Instead of immediately halting, an unsuccessful test must continue to probe, moving forward until either the value is found or an empty location is encountered.
+If AnNe now joins the club, we will find that the hash value (namely, 5) is the same as for AlFred. 
+
+So to find a location to store the value Anne we "probe" for the next free location.
+
+- This means to simply move forward, position by position, "until an empty location is found".
+
+| 0 - aiqy | 1 - bjrz | 2 - cks | 3 - dlt | 4 - emu | 5 - fnv | 6 - gow | 7 - hpx |
+|:--------:|:--------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|
+| amIna    |   AgNes  |         | anDy    | alEssia | alFred  |   AnNe  | asPen   |
+
+
+AgNes wishes to join the club. Her hash value, 6, is already filled. The probe
+moves forward to the next position, and when the end of the array is reached it continues with the first element.
+
+Finally, suppose Alan(0) wishes to join the club.
+
+| 0 - aiqy | 1 - bjrz | 2 - cks | 3 - dlt | 4 - emu | 5 - fnv | 6 - gow | 7 - hpx |
+|:--------:|:--------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|
+| amIna    |   AgNes  |AlAn     | anDy    | alEssia | alFred  |   AnNe  | asPen   |
+
+
+## Load Factor
+
+The ratio of the number of elements to the table size. For open address hashing the load factor is never larger than 1. 
+
+
+a common solution to a full hash table is to "move all values into a new and larger table" when the load factor becomes larger than some threshold, such as 0.75. 
+
+To do so a new table is created, and every entry in the old table is "rehashed", this time "dividing by the new table size to find the index to place into the new table".
+
+Think about searching the table above for the value Alan, for example. Instead of immediately halting, an unsuccessful test must continue to probe, moving forward until either the value is found or an empty location is encountered.
+
+
+***
+
 
 ## Caching
 

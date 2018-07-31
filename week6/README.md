@@ -127,10 +127,14 @@ Collisions occur when two values hash to the same index.
 
 ## Open Address Hashing(Probing) - Deal with collisions
 
-1. Construct a Bag.
-2. Use the Bag as the source for a Dictionary.
-3. When open-address hashing is used all elements are stored in a single large table.
-4. Positions that are not yet filled are given a null value. 
+If a spot is full, probe prob for next empty spot.
+
+### Adding - Linear probing
+
+1. All values are stored in an array.
+2. Hash value is used to find initial index to try.
+3. If that position is filled, the next position is examined, then the next and so on until an empty position is found.(Linear Probing)
+4. Positions that are not yet filled are given a null value.
 
 | 0 - aiqy | 1 - bjrz | 2 - cks | 3 - dlt | 4 - emu | 5 - fnv | 6 - gow | 7 - hpx |
 |:--------:|:--------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|
@@ -157,21 +161,85 @@ Finally, suppose Alan(0) wishes to join the club.
 |:--------:|:--------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|
 | amIna    |   AgNes  |AlAn     | anDy    | alEssia | alFred  |   AnNe  | asPen   |
 
+### Contains 
+1. Compute the hash function to to find initial index (If found, return true)
+2. probe forward until - value is found (return true) or meet empty location (return false)
+
+- Search time is not uniform.
+
+
+### Remove
+
+| 0 - aiqy | 1 - bjrz | 2 - cks | 3 - dlt | 4 - emu | 5 - fnv | 6 - gow | 7 - hpx |
+|:--------:|:--------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|
+| amIna    |   AgNes  |AlAn     | anDy    | alEssia | alFred  |   AnNe  | asPen   |
+
+If we removed agnes -> alan would be found in probing
+
+| 0 - aiqy | 1 - bjrz | 2 - cks | 3 - dlt | 4 - emu | 5 - fnv | 6 - gow | 7 - hpx |
+|:--------:|:--------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|
+| amIna    |          |AlAn     | anDy    | alEssia | alFred  |   AnNe  | asPen   |
+
+Instead deleteing the value and leave it empty to cause problem when we need to prob next time:
+
+1. Simple solution: Dont allow removal. (Words dont get removed from a spell checker)
+2. Replace removed item with "Tombstone".
+
+### Tombstone
+- Special value that marks deleted entry
+- Can be replaced when adding new entry 
+- But doesn't halt search during contains or remove
+
+| 0 - aiqy | 1 - bjrz | 2 - cks | 3 - dlt | 4 - emu | 5 - fnv | 6 - gow | 7 - hpx |
+|:--------:|:--------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|
+| amIna    |   _TS_   |AlAn     | anDy    | alEssia | alFred  |   AnNe  | asPen   |
+
+
 
 ## Load Factor
 
+l = n (# of elements) / m (size of table)
+
 The ratio of the number of elements to the table size. For open address hashing the load factor is never larger than 1. 
 
+### Clustering
+
+| 0 - aiqy | 1 - bjrz | 2 - cks | 3 - dlt | 4 - emu | 5 - fnv | 6 - gow | 7 - hpx |
+|:--------:|:--------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|
+| amIna    |          |         |  AlAn   | alEssia | alFred  |         | asPen   |
+
+Assuming uniform distribution of hash values what's the probability that the next value will end up in index 1, 2, 6 :  3/8, 1/8, 4/8
+
+As load factor gets larger, the tendency to cluster increases, resulting in longer search times upon collision.
+
+### Solving Clustering
 
 a common solution to a full hash table is to "move all values into a new and larger table" when the load factor becomes larger than some threshold, such as 0.75. 
 
 To do so a new table is created, and every entry in the old table is "rehashed", this time "dividing by the new table size to find the index to place into the new table".
 
-Think about searching the table above for the value Alan, for example. Instead of immediately halting, an unsuccessful test must continue to probe, moving forward until either the value is found or an empty location is encountered.
+## Algorithm Complexity 
 
+### Assumptions
+Time to compute hash funciton is constant
+Worst case analysis : All values hash to same position
+Best case analysis : hash function uniformly distributes the values
+
+### Find element opeartion
+Worst case for open addressing : O(n)
+Best Case for open addressing : O(1)
+
+### Average Case
+1 / (1 - Load Factor) -> When load factor increase, search time increase dramactialy
+
+So, its very important to keep Load Factor low.
 
 ***
 
+## Open Address Hashing Implementaion using Dynamic Array
+
+
+***
 
 ## Caching
 

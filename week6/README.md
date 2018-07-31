@@ -238,6 +238,101 @@ So, its very important to keep Load Factor low.
 
 ## Open Address Hashing Implementaion using Dynamic Array
 
+- Why Stored pointers in the array : Need to tell if a position is empty or not : Store only poiters & check for null (== 0)
+
+```c
+
+struct openHashTable {
+  TYPE ** table; /* pointer points to the pointer stored in array */
+  int tableSize;
+  int count;
+};
+
+/* Iniitial Size of the table is 17 and 
+   Resized if the load factor larger than 0.75 */
+void initOpenHashTable (struct openHashTable *ht, int size) {
+  assert(size > 0);
+  ht -> table = (TYPE **) malloc (size * sizeof(TYPE *));
+  assert(ht -> table != 0);
+  /* Fill in the array */
+  for(int i = 0; i < size; i++) {
+    ht -> table[i] = 0; /* Initialize empty */
+  }
+  ht -> tableSize = size;
+  ht -> count = 0;
+}
+
+int openHashTableSize(struct openHashTable *ht) {
+  return ht -> count;
+}
+
+void openHashTableAdd(struct openHashTable *ht, TYPE *newValue) {
+  /* Make sure we have space and under the load factor 0.75 */
+  /* Load Factor = number of elements / size of table */
+  if((ht -> count / (double) ht -> tableSize) > 0.75) {
+    _resizeOpenHashTable(ht);
+  }
+  ht -> count ++;
+
+  index = HASH(newValue) % ht -> tableSize; /* Hash and get a right position */
+
+  if(index < 0) index += ht -> tableSize; /* Deal with the negative integer base on different hashing function */
+
+  /* Add the new value into that index */
+  while(index >= 0) {
+    /* After probing, the index exceed size of table */
+    if(index == ht -> tableSize) {
+      index = 0;
+    }
+
+    if(ht -> table[index] == 0) {
+      /* Add the new value into this empty position and end the loop */
+      ht -> table[index] = newValue;
+      index = -1;
+    }
+    else {
+      /* That position was not empty, probing */
+      index ++;
+    }
+  }
+}
+
+int openHashTableContains(struct openHashTable *ht, TYPE newValue) {
+  int index = HASH(newValue) % ht -> tableSize;
+  if(index < 0) index += ht -> tableSize;
+
+  while(ht -> table[index] != 0) {
+    if(compare(ht -> table[index], newValue) == 0) {
+      /* Fount the target */
+      reutrn 1
+    }
+
+    /* Probing to find next position */
+    index ++;
+
+    /* Modify the value of index */
+    if(index == ht -> tableSize) {
+      index = 0;
+    }
+  }
+
+  return 0;
+}
+
+void _resizeOpenHashTable(struct openHashTable *ht) {
+  int originalSize = ht -> tableSize;
+  TYPE **temp = ht -> table;
+  initOpenHashTable(ht, originalSize * 2);
+
+  for(int i = 0; i < originalSize; i++) {
+    if(temp[i] != 0) {
+      openHashTableAdd(ht, temp[i]);
+    }
+  }
+  free(temp);
+}
+
+```
 
 ***
 

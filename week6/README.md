@@ -276,8 +276,10 @@ void openHashTableAdd(struct openHashTable *ht, TYPE *newValue) {
 
   index = HASH(newValue) % ht -> tableSize; /* Hash and get a right position */
 
-  if(index < 0) index += ht -> tableSize; /* Deal with the negative integer base on different hashing function */
 
+  /* Deal with the negative integer base on different hashing function */
+  if(index < 0) index += ht -> tableSize; 
+  
   /* Add the new value into that index */
   while(index >= 0) {
     /* After probing, the index exceed size of table */

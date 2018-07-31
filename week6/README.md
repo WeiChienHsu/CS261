@@ -11,6 +11,61 @@ To do a retrieval, the user supplies a key, and the container returns the associ
 - keys()
 - size
 
+## Example Application: Concordance
+Count the number of times each word appears in a selection of texts.
+- Keys: Unique words from the text
+- Values: count of each word
+
+```c
+struct association {
+  KEYTYPE key;
+  VALUETYPE value;
+};
+
+void dyArrayDictionaryGet (struct dynArray*da, KEYTYPE key, VALUETYPE *valptr) {
+  for(int i = 0; i < da -> size; i++) {
+    if(strcmp(da -> data[i] -> key, key) == 0) {
+      *valptr = da -> data[i] -> value;
+    }
+  }
+}
+
+void dyArrayDictionaryPut (struct dynArray * da, KEYTYPE key, VALUETYPE val) {
+  struct association *ap;
+  if(dyArrayDictionaryContainsKey(da, key)) {
+    dyArrayDictionaryRemoveKey(da, key);
+  }
+
+  ap = (struct association*) malloc (sizeof(struct association));
+  assert(ap != 0);
+  ap -> key = key;
+  ap -> value = value;
+  dyArrayAdd(da, ap); /* Store assocation into Dynamic Array */
+  
+  }
+
+int dyArrayDictionaryContainsKey (struct dynArray * da, KEYTYPEkey) {
+  for(int i = 0; i < da -> size; i++) {
+    if(strcmp(key, da -> data[i] -> key) == 0) {
+      return 1;
+    }
+  }
+  return 0;
+}
+
+void dyArrayDictionaryRemoveKey (struct dynArray * da, KEYTYPEkey) {
+  for(int i = 0; i < da -> size; i++) {
+    if(strcmp(key, da -> data[i] -> key) == 0) {
+      strcut association *temp;
+      temp = da -> data[i];
+      removeAtDynArr(da, i);
+      free(temp);
+      break;
+    }
+  }
+}
+```
+
 ***
 
 # Hashing Function
@@ -64,10 +119,11 @@ Converting a numeric type into an integer
 
 #### To get a good distribution of indices, prime numbers make the best table size
 
-
 ***
 
 # Collisions
+
+Collisions occur when two values hash to the same index.
 
 ## Open Address Hashing(Probing) - Deal with collisions
 

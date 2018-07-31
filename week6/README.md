@@ -279,7 +279,7 @@ void openHashTableAdd(struct openHashTable *ht, TYPE *newValue) {
 
   /* Deal with the negative integer base on different hashing function */
   if(index < 0) index += ht -> tableSize; 
-  
+
   /* Add the new value into that index */
   while(index >= 0) {
     /* After probing, the index exceed size of table */
@@ -338,6 +338,71 @@ void _resizeOpenHashTable(struct openHashTable *ht) {
 
 ***
 
+## Chaining (or Buckets)
+
+Keep a collection at each table entry by Linked List.
+
+Each element in the array (the hash table) is a header for a linked list. All elements that hash into the same location will be stored in the list.
+
+### Load Facotr
+
+l = n (# of elements) / m (size of table)
+
+Load Factor represents average number of elements in each bucket
+- For chaining, load factor can be greater than 1.
+
+
+### Implementation of Chaining by Linked List
+
+```c
+struct hlink {
+  TYPE value;
+  struct hlink *next;
+};
+
+struct HashTable {
+  struct hlink **table; /* Hash Table -> Array of Lists */
+  int tableSize;
+  int count;
+}
+
+void initHashTable(struct HashTable *ht, int size) {
+  ht -> tableSize = size;
+  ht -> count = 0;
+  ht -> table = malloc(size * sizeof(struct hlink *));
+  assert(ht -> table != 0);
+  /* Initilize each address of its linked list */
+  for(int i = 0; i < size; i++) {
+    ht -> table[i] = 0;
+  }
+}
+
+void HashTableAdd(struct HashTable *ht, TYPE newValue) {
+
+}
+
+
+TYPE HashTableContains(struct HashTable *ht, TYPE target) {
+
+}
+
+
+void HashTableRemove(struct HashTable *ht, TYPE value) {
+
+}
+
+void HashTableResize(struct HashTabke *ht) {
+
+}
+
+
+
+
+```
+
+
+***
+
 ## Caching
 
 Indexing into a hash table is extremely fast, even faster than searching a skip list or an AVL tree. When a search request is received, the cache will examine the hash table. If the value is found in the cache, it is simply returned. If it is not found, then the original data structure is examined.
@@ -352,4 +417,6 @@ Each operation on the hash table divides into two steps. First, the element is h
 
 ### Compare Probing and Chaining
 
-As with open address hash tables, the load factor (λ) is defined as the number of elements divided by the table size. In this structure the load factor can be larger than one, and represents the average number of elements stored in each list, assuming that the hash function distributes elements uniformly over all positions. Since the running time of the contains test and removal is proportional to the length of the list, they are O(λ). Therefore the execution time for hash tables is fast only if the load factor remains small. A typical technique is to resize the table (doubling the size, as with the vector and the open address hash table) if the load factor becomes larger than 10.
+As with open address hash tables, the load factor (λ) is defined as the number of elements divided by the table size. In this structure the load factor can be larger than one, and represents the average number of elements stored in each list, assuming that the hash function distributes elements uniformly over all positions. 
+
+Since the running time of the contains test and removal is proportional to the length of the list, they are O(λ). Therefore the execution time for hash tables is fast only if the load factor remains small. A typical technique is to resize the table (doubling the size, as with the vector and the open address hash table) if the load factor becomes larger than 10.

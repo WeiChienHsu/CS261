@@ -265,7 +265,43 @@ void hashMapPut(HashMap* map, const char* key, int value)
  */
 void hashMapRemove(HashMap* map, const char* key)
 {
-    // FIXME: implement
+    /* Hash the key to get a hash index */
+    int hashIndex = HASH_FUNCTION(key) % map -> capacity;
+    /* Modify Hash Index to be a postive integer */
+    if(hashIndex < 0) hashIndex += map -> capacity;
+    /* Set current and prev pointers point to the bucket with hash index */
+    struct HashLink *current = map -> table[hashIndex];
+    struct HashLink *prev = map -> table[hashIndex];
+
+    /* Check if the first key stored in the bucket equal to our target key */
+    if(strcmp(current -> key, key) == 0) {
+    /* If the HEAD of Hash List is the matched key */
+        /* Directly remove the Head by pointing to its next List */
+        map -> table[hashIndex] = current -> next;
+        /* Delete the current List */
+        hashLinkDelete(current);
+        /* Update the size of table */
+        map -> size--;
+    }
+    else {
+        /* Move forward to find the matched key */
+        current = current -> next;
+        /* Loop until current pointer meet NULL */
+        while(current != NULL) {
+            if(strcmp(current -> key, key) == 0) {
+                /* Only need to remove the current List */
+                prev -> next = current -> next;
+                /*  Delete the current List*/
+                hashLinkDelete(current);
+                map -> size --;
+                break;
+            }
+            /* Update the previous pointer to the current position */
+            prev = current;
+            /* Then, move forward current pointer */
+            current = current -> next;
+        }
+    }
 }
 
 /**
@@ -280,7 +316,22 @@ void hashMapRemove(HashMap* map, const char* key)
  */
 int hashMapContainsKey(HashMap* map, const char* key)
 {
-    // FIXME: implement
+    /* Hash the key to get a hash index */
+    int hashIndex = HASH_FUNCTION(key) % map -> capacity;
+    /* Modify Hash Index to be a postive integer */
+    if(hashIndex < 0) hashIndex += map -> capacity;
+    /* Temporary pointer to traverse Hash Link without changing its position and value */
+    struct HashLink *temp = map -> table[hashIndex];
+    /* Looping until meet NULL */
+    while(temp != NULL) {
+        if(strcmp(temp -> key, key) == 0) {
+            /* Found the key */
+            return 1;
+        }
+        /* Move forward */
+        temp = temp -> next;
+    }
+    /* After looping through the Hash Link, still don't find the key */
     return 0;
 }
 
@@ -291,8 +342,7 @@ int hashMapContainsKey(HashMap* map, const char* key)
  */
 int hashMapSize(HashMap* map)
 {
-    // FIXME: implement
-    return 0;
+    return map -> size;
 }
 
 /**
@@ -302,8 +352,7 @@ int hashMapSize(HashMap* map)
  */
 int hashMapCapacity(HashMap* map)
 {
-    // FIXME: implement
-    return 0;
+    return map -> capacity;
 }
 
 /**
@@ -313,8 +362,16 @@ int hashMapCapacity(HashMap* map)
  */
 int hashMapEmptyBuckets(HashMap* map)
 {
-    // FIXME: implement
-    return 0;
+    /* Set a counter variable */
+    int count = 0;
+    /* Loop through while Hash Map by its capacity */
+    for(int i = 0; i < hashMapCapacity(map); i++) {
+        /* Meet the empty bucket */
+        if(map -> table[i] == NULL) {
+            count++;
+        }
+    }
+    return count;
 }
 
 /**
@@ -327,8 +384,7 @@ int hashMapEmptyBuckets(HashMap* map)
  */
 float hashMapTableLoad(HashMap* map)
 {
-    // FIXME: implement
-    return 0;
+    return (float)map -> size / map -> capacity;
 }
 
 /**
@@ -337,7 +393,16 @@ float hashMapTableLoad(HashMap* map)
  */
 void hashMapPrint(HashMap* map)
 {
-  // FIXME: implement
-
-   
+    for(int i = 0; i < map -> capacity; i++) {
+        HashLink *current = map -> table[i];
+        if(current != NULL) {
+            printf("\nBucket %i : ", i);
+            while(current != NULL) {
+                printf(" (%s, %d) ", current -> key, current -> value);
+                current = current -> next;
+            }
+        }
+        printf("\n");
+    }
+    printf("\n");
 }

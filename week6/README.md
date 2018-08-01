@@ -277,7 +277,11 @@ void openHashTableAdd(struct openHashTable *ht, TYPE *newValue) {
   index = HASH(newValue) % ht -> tableSize; /* Hash and get a right position */
 
 
-  /* Deal with the negative integer base on different hashing function */
+      
+   /* To be safe, use only positive arithmetic.  % may behave very differently on diff	 
+      implementations or diff languages .  However, you can do the following to deal with a 
+      negative result from HASH  */
+
   if(index < 0) index += ht -> tableSize; 
 
   /* Add the new value into that index */
@@ -480,3 +484,30 @@ Each operation on the hash table divides into two steps. First, the element is h
 As with open address hash tables, the load factor (λ) is defined as the number of elements divided by the table size. In this structure the load factor can be larger than one, and represents the average number of elements stored in each list, assuming that the hash function distributes elements uniformly over all positions. 
 
 Since the running time of the contains test and removal is proportional to the length of the list, they are O(λ). Therefore the execution time for hash tables is fast only if the load factor remains small. A typical technique is to resize the table (doubling the size, as with the vector and the open address hash table) if the load factor becomes larger than 10.
+
+***
+
+## Bit Set Spell Checker
+
+Unfortunately, if the value in the table is 1, it may still be misspelled since two words can easily hash into the same location. 
+
+To correct this problem, we can enlarge our bit set, and try using more than one hash function. 
+
+An easy way to do this is to select a table size t, and select some number of prime numbers, for example five, that are larger than t. Call these p1, p2, p3, p4 and p5.
+
+Now rather than just using the hash value of the word as our starting point, we first take the remainder of the hash value when divided by each of the prime numbers, yielding five different values. 
+
+Then we map each of these into the table. Thus each word may set five different bits. 
+
+This following illustrates this with a table of size 21, using the values 113, 181, 211, 229 and 283 as our prime numbers:
+
+|Word| Hashcode |H%113| H%181 |H%211 |H%229 |H%283|
+|:--:|:--------:|:---:|:-----:|:----:|:----:|:---:|
+|This| 6022124  |15(15)| 73(10)| 184(16)| 111(6)| 167(20)|
+|Text| 6018573 |80(17)| 142(16)| 9(9)| 224(14)| 12(12)|
+|Example |1359142016| 51(9)| 165(18)| 75(12)| 223(13) |273(0)|
+
+
+The key assumption is that different words may map into the same locations for one or two positions, but not for all five. Thus, we reduce the chances that a misspelled word will score a false positive hit.
+
+***

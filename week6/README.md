@@ -378,28 +378,88 @@ void initHashTable(struct HashTable *ht, int size) {
 }
 
 void HashTableAdd(struct HashTable *ht, TYPE newValue) {
+  int index = HASH(newValue) % ht -> tableSize;
+  if(index < 0) index += ht -> tableSize;
 
+  struct hlink *newLink = malloc(sizeof(struct hlink));
+  assert(newLink != 0);
+  newLink -> value = newValue;
+  newLink -> next = ht -> table[index];
+  ht -> table[index] = newLink;
+  ht -> count ++;
+
+  if(ht -> count / (double) ht -> tableSize) > 8.0) {
+    _HashTableResize(ht);
+  } 
 }
 
 
 TYPE HashTableContains(struct HashTable *ht, TYPE target) {
+  int index = HASH(target) % ht -> tableSize;
+  if(index < 0) index += ht -> tableSize;
 
+  struct hlink *temp = ht -> table[index]; /* Get the Links */
+  while(temp != 0) {
+    if(compare(temp -> value, value) == 0) {
+      return 1;
+    }
+    temp = temp -> next;
+  }
+  return 0;
 }
 
 
 void HashTableRemove(struct HashTable *ht, TYPE value) {
+  int index = HASH(value) % ht -> tableSize;
+  if(index < 0) index += ht -> tableSize;
 
+  struct hlink * prev;
+  struct hlink * curr;
+
+  if(HashTableContains(ht, value)) {
+    prev = 0;
+    cur = ht -> table[index];
+
+    while(cur != 0) {
+      if(compare(cur -> value, value) == 0) {
+        if(cur = ht -> table[index]) {
+          /* target value is the HEAD */
+          /* Directly remove current element */
+          ht -> table[index] = current -> next;
+        }
+        else {
+          /* Current element is in the List */
+          /* Used the previous pointer to remvoe current Link */
+          prev -> next = cur -> next;
+        }
+      } else {
+        /* Haven't find the target, move both previous and current pointers */
+        prev = cur;
+        cur = cur -> next;
+      }
+    }
+  }
 }
 
-void HashTableResize(struct HashTabke *ht) {
+void _HashTableResize(struct HashTabke *ht) {
+  struct HashTable *newTable;
+  int newSize = ht -> tableSize * 2;
+  struct hlink *temp, *last;
+  
+  initHashTable(newTable, newSize);
 
+  for(int i = 0; i < ht -> size; i++) {
+    temp = ht -> table[i];
+    while(temp != 0) {
+      hashTableAdd(newTable, temp -> value);
+      last = temp;
+      temp = temp -> next;
+      free(last);
+    }
+  }
+  ht = newTable;
 }
-
-
-
-
 ```
-
 
 ***
 

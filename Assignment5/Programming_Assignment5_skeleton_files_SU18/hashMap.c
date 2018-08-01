@@ -396,13 +396,12 @@ void hashMapPrint(HashMap* map)
     for(int i = 0; i < map -> capacity; i++) {
         HashLink *current = map -> table[i];
         if(current != NULL) {
-            printf("\nBucket %i : ", i);
+            printf("\nBucket %i ->", i);
             while(current != NULL) {
-                printf(" (%s, %d) ", current -> key, current -> value);
+                printf(" (%s, %d) ->", current -> key, current -> value);
                 current = current -> next;
             }
         }
-        printf("\n");
     }
     printf("\n");
 }

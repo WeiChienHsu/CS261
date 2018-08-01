@@ -1,3 +1,10 @@
+/*
+ * CS 261 Data Structures
+ * Assignment 5
+ * Name: Wei-Chien Hsu
+ * Date: 8/01/2018
+ */
+
 #include "hashMap.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -31,7 +38,12 @@ char* nextWord(FILE* file)
                 maxLength *= 2;
                 word = realloc(word, maxLength);
             }
-            // .............
+            /* A: 65, B:66, Z:90, a:97, b:98, z:122 */
+            /* Convert Uppercase to the Lowercase */
+            if(c >= 'A' && c <= 'Z'){
+                c += 32;
+            }
+
             word[length] = c;
             length++;
         }
@@ -71,9 +83,51 @@ int main(int argc, const char** argv)
     
     HashMap* map = hashMapNew(10);
     
-    // --- Concordance code begins here ---
-    // Be sure to free the word after you are done with it here.
-    // --- Concordance code ends here ---
+    /* Open a file by calling fopen() and use a pointer for hold the file */
+    FILE *inputFile = fopen(fileName, "r");
+
+    if(!inputFile) {
+        printf("ERROR: Can not open the input file. \n");
+    }
+    /* Load the first word into key pointer */
+    char *key = nextWord(inputFile);
+
+    /* Loop through the file to update keys counted in the Map  */
+    while(key != 0) {
+        printf(" %s", key);
+        /* Check if the key is in the map or not */
+        if(hashMapContainsKey(map, key) == 0) {
+            /* Create a new key into the Map */
+            hashMapPut(map, key, 1);
+        } 
+        else {
+            /* Increment the value of the key by 1 */
+            (*hashMapGet(map, key))++;
+        }
+        /* Free the memory space that stored the previous key */
+        free(key);
+        /* Get new key stored in different address for this key pointer */
+        key = nextWord(inputFile);
+    }
+
+    fclose(inputFile);
+    printf("\n");
+
+    /* Loop through each bucket to print each List */
+    // for(int i = 0; i < map -> capacity; i++) {
+    //     struct HashLink *current = map -> table[i];
+
+    //     if(current == NULL) {
+    //         break;
+    //     }
+
+    //     printf("Bucket  %i", i);
+
+    //     while(current != NULL) {
+    //         printf("(Key: %s, Value: %d)", current -> key, current -> value);
+    //         current = current -> next;
+    //     }
+    // }
     
     hashMapPrint(map);
     

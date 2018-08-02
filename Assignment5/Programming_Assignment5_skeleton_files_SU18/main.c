@@ -112,22 +112,6 @@ int main(int argc, const char** argv)
 
     fclose(inputFile);
     printf("\n");
-
-    /* Loop through each bucket to print each List */
-    // for(int i = 0; i < map -> capacity; i++) {
-    //     struct HashLink *current = map -> table[i];
-
-    //     if(current == NULL) {
-    //         break;
-    //     }
-
-    //     printf("Bucket  %i", i);
-
-    //     while(current != NULL) {
-    //         printf("(Key: %s, Value: %d)", current -> key, current -> value);
-    //         current = current -> next;
-    //     }
-    // }
     
     hashMapPrint(map);
     

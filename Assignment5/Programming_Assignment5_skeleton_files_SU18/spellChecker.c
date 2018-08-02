@@ -68,7 +68,7 @@ void loadDictionary(FILE* file, HashMap* map)
         /* Free the address stored the previous word for the next word */
         free(word);
         /* Points to the next Word */
-        word = nextWord;
+        word = nextWord(file);
     }
 }
 
@@ -159,9 +159,9 @@ int main(int argc, const char** argv)
             /* A Hash Link pointer points to single link in our table (value in dictionary) */
             HashLink *link = map -> table[i];
             if(link != NULL) {
-                while(linl != NULL) {
+                while(link != NULL) {
                     if(strcmp(inputBuffer, link -> key) == 0) {
-                        printf("The inputted word %s is spelled correctly", originalInputBuffer);
+                        printf("The inputted word %s is spelled correctly \n", originalInputBuffer);
                         link = NULL; /* Stop the */
                         found = 1;
                     }
@@ -197,10 +197,10 @@ int main(int argc, const char** argv)
 
         /* Still not found the matched key */
         if(!found) {
-            printf("The inputted word %s is spelled correctly", originalInputBuffer);
+            printf("The inputted word %s is spelled incorrectly. \n", originalInputBuffer);
             /* Print out 5 most possible results */
             for(int i = 0; i < 5; i++)
-                printf("Did you mean? \"%s\"\n", matches[i]);
+                printf("Did you mean \"%s\"? \n", matches[i]);
         }
 
         for(int i = 0; i < 5; i++) {

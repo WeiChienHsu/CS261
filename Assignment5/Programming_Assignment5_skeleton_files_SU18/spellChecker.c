@@ -1,3 +1,10 @@
+/*
+ * CS 261 Data Structures
+ * Assignment 5
+ * Name: Wei-Chien Hsu
+ * Date: 8/02/2018
+ */
+
 #include "hashMap.h"
 #include <assert.h>
 #include <time.h>

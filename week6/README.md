@@ -511,3 +511,29 @@ This following illustrates this with a table of size 21, using the values 113, 1
 The key assumption is that different words may map into the same locations for one or two positions, but not for all five. Thus, we reduce the chances that a misspelled word will score a false positive hit.
 
 ***
+
+## Counting Sort
+
+```c
+void countSort(int data[], int n, int max) {
+  int i, j, kl
+  /* Allocate a bucket */
+  int* cnt = malloc((max + 1) * sizeof(int));
+  /* Count the occurrences of each value */
+  for(i = 0; i < n; i++)
+    cnt[data[i]]++;
+
+  /* Count holds the number of occurrences of numbers from 0 to max */
+  i = 0;
+
+  /* Time complexity : O(n + m) */
+  for(j = 0; j <= max; j++)
+    for(k = cnt[j]; k > 0; k--)
+      data[i++] = j;
+} 
+```
+
+***
+
+## Radix Sort
+

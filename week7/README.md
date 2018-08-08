@@ -152,3 +152,74 @@ public static void showThePathByBFS(HashMap<Integer, List<Integer>> edgesList) {
 
 ## Dijkstra's Shortest Path Algorithm (Implement by PriorityQueue)
 
+O(E LogE) : Inner loop runs at most E times and Time to add / remove from priority Queue is bounded by LogE.
+
+
+```
+Need a Reachable HashMap to record <"Name" : "Shortest Distance">
+Need a Priortiy Queue to Put the toCity Class
+Add source vertex to PQ with distance 0
+
+while PQ is not empty
+  Get and Remove vertex v with shortest distance from PQ
+  If v is known to be reachable, discard
+  Otherwise, add v with given cost to reachable dictionary 
+  For all neighbors vj of v
+    if vj is not in reachable dictionary, update cost of reaching v 
+    with cost to travel from v to vj, and add it into PQ
+```
+
+```java
+class toCity {
+  String name;
+  int dist;
+  public toCity(String name, int dist) {
+    this.name = name;
+    this.dist = dist;
+  }
+}
+
+public static void Dijkstra(HashMap<String, HashMap<String, Integer>> source, String startCity) {
+
+    /* Set a reachable HashMap to record the shortest distance with City */
+    LinkedHashMap<String, Integer> reachable = new LinkedHashMap<>();
+
+    /* Set a Priority Queue to get the currently shortest path */
+    /* Write a Comparator for a min Heap return values base on dist in class*/
+    PriorityQueue<toCity> pq = new PriorityQueue<>(new Comparator<toCity>() {
+        @Override
+        public int compare(toCity o1, toCity o2) {
+            return o1.dist - o2.dist;
+        }
+    });
+
+    /* Add the Start City into Priority Queue */
+    pq.add(new toCity(startCity, 0));
+
+    while(!pq.isEmpty()) {
+        /* Get the shortest city form the top of PQ */
+        toCity currentCity = pq.poll();
+
+        /* If current city is in the reachable, discard */
+        if(reachable.containsKey(currentCity.name)) {
+            continue;
+        } else {
+            /* add v with given cost to reachable dictionary */
+            reachable.put(currentCity.name, currentCity.dist);
+        }
+
+        /* Get the HashMap which has recorded all neighbors of current City */
+        HashMap<String, Integer> neighbors = source.get(currentCity.name);
+
+        for(String neighbor : neighbors.keySet()) {
+            /* Check if the neighbor of current city has been put into reachable map */
+            if(!reachable.containsKey(neighbor)) {
+                /* Updated the new Distance by adding up: */
+                    /* Current Distance : currentCity.dist */
+                    /* Distance of current city to its neighbor: neighbors.get(neighbor) */
+                pq.add(new toCity(neighbor, currentCity.dist + neighbors.get(neighbor)));
+            }
+        }
+    }
+}
+```

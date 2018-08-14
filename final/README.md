@@ -8,6 +8,7 @@
 |Contain| O(n)           | O(n)   | O(logN)     | O(logN) |
 |Remove | O(n)           | O(1)   | O(n)        | O(logN) |
 
+
 ```c
 #include <assert.h>
 #include <stdlib.h>
@@ -133,7 +134,41 @@ int sizeBSTree(struct BSTree * tree){
 }
 ```
 
-
 ***
 
+## AVL Tree (Height-Balanced BST)
 
+When Unbalanced, performs a 'rotation' to balance the tree.
+
+
+### Left Rotation
+
+0. Current node is the unbalanced node.
+1. New Top node is the current node's right child
+2. Current node's new right child is the new top nodes left child
+3. New top's left child is the current node
+4. Set height of current node
+5. Set height of new top node
+6. Return new top node
+
+
+### Double Rotation
+
+When an insertion is made on the left or right side of a node that is itself a heavy right or left child. (Heavy Right with left child / Heavy Left with right child)
+
+1. First Rotate the heavy right or left child to the right or left.
+2. Rotate the top node to the left.
+
+
+```
+If LEFT child is tallest (by more than 1):
+  If LEFT child is heavy on the RIGHT side:  // Double Rotation needed
+    Rotate the LEFT child to the LEFT
+  Rotate unbalanced top node to the RIGHT
+
+Else If RIGHT child is tallest (by more than 1):
+  IF RIGHT child is heavy on the LEFT side:
+    Rotate the RIGHT child to the RIGHT
+  Rotate unbalanced top node to the LEFT
+
+```

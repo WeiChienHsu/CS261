@@ -45,20 +45,101 @@ int _bf (struct AVLnode * current){
 }
 
 struct AVLnode * _balance (struct AVLnode * current) {
+ /* Check if the current node is unbalanced */
  int cbf = bf(current);
  
  if (cbf < -1) {
-    if (bf(current->left) > 0) // double rotation
+   /* Left Child is Tallest */
+    if (bf(current->left) > 0)
+      /* Double Rotation */
+      /* Left Side have heavy Right Side : Rotate left child LEFT */
       current->left = rotateLeft(current->left);
-    return rotateRight(current); // single rotation
+    /* Single Rotation: rotate Right */
+    return rotateRight(current); 
 
  } else if (cbf > 1) {
+   /* Right Child is Tallest */
     if (bf(current->right) < 0)
+      /* Double Rotation */
+      /* Right Child have heavy Left Side : Rotate right child RIGHT*/
       current->right = rotateRight(current->right);
+    /* Single Rotation: rotate Left */
     return rotateLeft(current);
  }
 
- /* Current Balance factor == -1 0 1, no need to rotation */   
   setHeight(current); /* Update the height */
   return current;
  }
+
+ struct AVLnode *_rotateRight(struct AVLnode * current) {
+   struct AVLnode * newRoot = current->left;
+   current -> left = newRoot -> right;
+   newRoot -> right = current;
+   setHeight(current);
+   setHeight(newRoot);
+   return newRoot;
+}
+
+struct AVLnode *_rotateLeft(struct AVLnode * current) {
+   struct AVLnode * newRoot = current -> right;
+   current -> right = newRoot -> left;
+   newtop -> left = current;
+   setHeight(current);
+   setHeight(newRoot);
+   return newRoot;
+}
+
+
+void removeAVLTree(struct AVLTree *tree, TYPE val) {
+ if (containsAVLTree(tree, val)) {
+    tree->root = _removeNode(tree->root, val);
+    tree->cnt--;
+ }
+}
+
+TYPE _leftMost(struct AVLNode *cur) {
+ while(cur->left != 0) {
+ cur = cur->left;
+ }
+ return cur->val;
+}
+
+struct AVLNode *_removeLeftmost(struct AVLNode *cur) {
+  struct AVLNode *temp;
+    if(cur->left != 0) {
+      cur->left = _removeLeftmost(cur->left);
+      return _balance(cur);
+    }
+  /* There is no left child */
+  temp = cur->rght;
+  free(cur);
+  return temp;
+}
+
+struct AVLNode *_removeNode(struct AVLNode *cur, TYPE val) {
+  struct AVLNode *temp;
+  if(EQ(val, cur->val)) {
+    if(cur->rght != 0) {
+      /* If there is a right child */
+      /* Find the value of leftMost node to replace the current value 
+      and remove the left Most node in right child */
+      cur->val =  _leftMost(cur->rght);
+      cur->rght =_removeLeftmost(cur->rght);
+      return _balance(cur);
+    } else {
+      /* If there is not right child, return current left and remove current node */
+        temp = cur->left;
+        free(cur);
+        return temp;
+    } 
+  } 
+  /* Haven't found the value */
+  else if(LT(val, cur->val)){
+    cur->left  = _removeNode(cur->left, val);
+  }
+  else {
+     cur->rght = _removeNode(cur->rght, val);
+  }
+
+  return _balance(cur);   
+}

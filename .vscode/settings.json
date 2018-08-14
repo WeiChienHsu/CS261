@@ -5,6 +5,7 @@
     "type_traits": "c",
     "stdlib.h": "c",
     "linkedlist.h": "c",
-    "assert.h": "c"
+    "assert.h": "c",
+    "string.h": "c"
   }
 }

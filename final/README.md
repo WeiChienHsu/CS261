@@ -152,13 +152,23 @@ When Unbalanced, performs a 'rotation' to balance the tree.
 6. Return new top node
 
 
+### Right Rotation
+
+0. Current node is the unbalanced node.
+1. New Top node is the current node's left child
+2. Current node's new left child is the new top nodes right child
+3. New top's right child is the current node
+4. Set height of current node
+5. Set height of new top node
+6. Return new top node
+
+
 ### Double Rotation
 
 When an insertion is made on the left or right side of a node that is itself a heavy right or left child. (Heavy Right with left child / Heavy Left with right child)
 
 1. First Rotate the heavy right or left child to the right or left.
 2. Rotate the top node to the left.
-
 
 ```
 If LEFT child is tallest (by more than 1):
@@ -172,3 +182,5 @@ Else If RIGHT child is tallest (by more than 1):
   Rotate unbalanced top node to the LEFT
 
 ```
+
+***

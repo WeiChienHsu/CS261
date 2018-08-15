@@ -435,6 +435,7 @@ void HashTableRemove(struct HashTable *ht, TYPE value) {
           /* Current element is in the List */
           /* Used the previous pointer to remvoe current Link */
           prev -> next = cur -> next;
+          break;
         }
       } else {
         /* Haven't find the target, move both previous and current pointers */

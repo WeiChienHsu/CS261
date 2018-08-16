@@ -57,7 +57,13 @@ struct AVLnode* _balance(struct AVLnode *current) {
   }
   /* Right Child is Tallest */
   else if(difference > 1) {
-
+       /* Right Child is Tallest */
+    if (bf(current->right) < 0)
+      /* Double Rotation */
+      /* Right Child have heavy Left Side : Rotate right child RIGHT*/
+      current->right = rotateRight(current->right);
+    /* Single Rotation: rotate Left */
+    return rotateLeft(current);
   }
 
   _setHeight(current);

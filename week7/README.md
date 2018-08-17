@@ -99,7 +99,6 @@ public static void showThePathByDFS(HashMap<Integer, List<Integer>> edgesList) {
             break;
         }
 
-
         /* Add all neighbors of current node into the Stack */
         List<Integer> neighbors = edgesList.get(currentNode);
 
@@ -153,7 +152,6 @@ public static void showThePathByBFS(HashMap<Integer, List<Integer>> edgesList) {
 ## Dijkstra's Shortest Path Algorithm (Implement by PriorityQueue)
 
 O(E LogE) : Inner loop runs at most E times and Time to add / remove from priority Queue is bounded by LogE.
-
 
 ```
 Need a Reachable HashMap to record <"Name" : "Shortest Distance">

@@ -155,7 +155,6 @@ public static void showThePathByBFS(HashMap<Integer, List<Integer>> edgesList) {
 O(E LogE) : Inner loop runs at most E times and Time to add / remove from priority Queue is bounded by LogE.
 
 
-
 ```
 Need a Reachable HashMap to record <"Name" : "Shortest Distance">
 Need a Priortiy Queue to Put the toCity Class
@@ -224,3 +223,9 @@ public static void Dijkstra(HashMap<String, HashMap<String, Integer>> source, St
     }
 }
 ```
+
+## Heap Sort is an in-place sorting algorithm 
+Since it could implement in place by an array.
+
+## Tree Sort is built by AVL binary Search Tree
+So it need an additional space building up a Tree.
